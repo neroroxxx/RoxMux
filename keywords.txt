@@ -1,0 +1,15 @@
+####################################################
+# Syntax Coloring Map
+####################################################
+
+RoxDual74HC165	KEYWORD1
+Rox74HC165	KEYWORD1
+begin	KEYWORD2
+update	KEYWORD2
+read	KEYWORD2
+readPin	KEYWORD2
+readPins	KEYWORD2
+
+Rox74HC4067	KEYWORD1
+Rox74HC4051	KEYWORD1
+setSignalPin	KEYWORD2
