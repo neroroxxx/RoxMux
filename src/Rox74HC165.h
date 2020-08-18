@@ -16,6 +16,8 @@
 
 #include <Arduino.h>
 
+#define ROXMUX_74HC165_DELAY 5
+
 template <uint8_t _muxCount>
 class Rox74HC165 {
   private:
@@ -38,18 +40,23 @@ class Rox74HC165 {
       pinMode(dataPin, INPUT);
       digitalWrite(clkPin, LOW);
       digitalWrite(loadPin, HIGH);
+      memset(states, 0, _muxCount);
     }
     void update(){
-      memset(states, 0, _muxCount);
       digitalWrite(loadPin, LOW);
-      delayMicroseconds(5);
+#if ROXMUX_74HC165_DELAY > 0
+      delayMicroseconds(ROXMUX_74HC165_DELAY);
+#endif
       digitalWrite(loadPin, HIGH);
       for(uint8_t mux = 0; mux < _muxCount; mux++){
         for(int i = 7; i >= 0; i--){
           uint8_t bit = digitalRead(dataPin);
           bitWrite(states[mux], i, bit);
           digitalWrite(clkPin, HIGH);
-          delayMicroseconds(5);
+
+#if ROXMUX_74HC165_DELAY > 0
+          delayMicroseconds(ROXMUX_74HC165_DELAY);
+#endif
           digitalWrite(clkPin, LOW);
         }
       }
