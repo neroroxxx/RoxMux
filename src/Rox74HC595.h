@@ -83,7 +83,6 @@ public:
       // set load pin
       digitalWrite(latchPin, LOW);
       digitalWrite(dataPin, LOW);
-      //for(uint8_t mux = 0; mux < _muxCount; mux++){
       if(_muxCount>1){
         _updateMuxReverse();
       } else {
