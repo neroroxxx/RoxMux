@@ -27,27 +27,53 @@ private:
   int8_t clkPin     = -1;
   int8_t latchPin   = -1;
   int8_t dataPin    = -1;
-  int8_t t_pwm      = -1;
+  int8_t pwmPin      = -1;
+
+  void _updateMuxReverse(){
+    for(int mux = _muxCount-1; mux >= 0; mux--){
+      for(uint8_t mask=0x80; mask; mask >>= 1){
+        _writeToMux(mux, mask);
+      }
+    }
+  }
+  void _updateMux(){
+    for(int mux = 0; mux < _muxCount; mux++){
+      for(uint8_t mask=0x80; mask; mask >>= 1){
+        _writeToMux(mux, mask);
+      }
+    }
+  }
+  void _writeToMux(uint8_t mux, uint8_t mask){
+    digitalWrite(dataPin, (states[mux] & mask));
+    digitalWrite(clkPin, HIGH);
+#if ROXMUX_74HC595_DELAY > 0
+    delayMicroseconds(ROXMUX_74HC595_DELAY);
+#endif
+    digitalWrite(clkPin, LOW);
+    digitalWrite(dataPin, LOW);
+  }
 
 public:
   Rox74HC595(){
     flags.reset();
     memset(states, 0, _muxCount);
   }
-  void begin(uint8_t t_date, uint8_t t_latch, uint8_t t_clk,
-    int8_t t_pwmPin = -1){
+  void begin(uint8_t t_data, uint8_t t_latch, uint8_t t_clk,
+    int8_t t_pwm = -1){
     clkPin = t_clk;
     latchPin = t_latch;
     dataPin = t_data;
-    pinMode(t_clock, OUTPUT);
-    pinMode(t_latch, OUTPUT);
-    pinMode(t_data, OUTPUT);
-    if(t_pwm!=-1){
-      pinMode(t_pwm, OUTPUT);
-      digitalWrite(t_pwm, HIGH);
+    pinMode(clkPin, OUTPUT);
+    pinMode(latchPin, OUTPUT);
+    pinMode(dataPin, OUTPUT);
+    if(t_pwm > -1){
+      pwmPin = t_pwm;
+      pinMode(pwmPin, OUTPUT);
+      delay(1);
+      setBrightness(255);
     }
-    digitalWrite(t_clock, LOW);
-    digitalWrite(t_latch, HIGH);
+    digitalWrite(clkPin, LOW);
+    digitalWrite(latchPin, HIGH);
     // turn all off
     flags.on(ROXMUX_74HC595_FLAG_CHANGED);
     update();
@@ -56,41 +82,51 @@ public:
     if(flags.toggleIfTrue(ROXMUX_74HC595_FLAG_CHANGED)){
       // set load pin
       digitalWrite(latchPin, LOW);
-      // total number of 74HC595 chips, each chip has 8 outputs.
-      // we'll always write to all the pins.
-      for(uint8_t mux = 0; mux < _muxCount; mux++){
-        //for(int i = 7; i >= 0; i--){
-        for(uint8_t i = 0; i < 7; i++){
-          uint8_t bit = bitRead(states[mux], i);
-          digitalWrite(dataPin, bit);
-          digitalWrite(clkPin, HIGH);
-#if ROXMUX_74HC595_DELAY > 0
-          delayMicroseconds(ROXMUX_74HC595_DELAY);
-#endif
-          digitalWrite(clkPin, LOW);
-        }
+      digitalWrite(dataPin, LOW);
+      //for(uint8_t mux = 0; mux < _muxCount; mux++){
+      if(_muxCount>1){
+        _updateMuxReverse();
+      } else {
+        _updateMux();
       }
       digitalWrite(latchPin, HIGH);
     }
   }
-  void setBrightness(uint8_t t_pwmValue){
-    if(t_pwm!=-1){
-      if(t_pwmValue==0 || t_pwmValue>=255){
-        digitalWrite(t_pwm, ((t_pwmValue==0) ? LOW : HIGH));
-      } else {
-        analogWrite(t_pwm, t_pwmValue);
+  void setBrightness(uint8_t value){
+    if(pwmPin > -1){
+      // reverse the brightness as the 595 requires a HIGH to disable outputs
+      value = map(value, 0, 255, 255, 0);
+      analogWrite(pwmPin, value);
+    }
+  }
+  void allOff(){
+    for(uint8_t i=0;i<_muxCount;i++){
+      if(states[i]>0){
+        flags.on(ROXMUX_74HC595_FLAG_CHANGED);
+        break;
       }
     }
+    memset(states, 0, _muxCount);
+  }
+  void allOn(){
+    for(uint8_t i=0;i<_muxCount;i++){
+      if(states[i]==0){
+        flags.on(ROXMUX_74HC595_FLAG_CHANGED);
+        break;
+      }
+    }
+    memset(states, 255, _muxCount);
   }
   // expects a zero-index value
   void writePin(uint16_t t_pin, bool on){
     uint8_t muxIndex = (uint8_t)floor(t_pin/8.0);
+    if(muxIndex>0){
+      t_pin -= (muxIndex*8);
+    }
     if(bitRead(states[muxIndex], t_pin) != on){
       flags.on(ROXMUX_74HC595_FLAG_CHANGED);
     }
     bitWrite(states[muxIndex], t_pin, on);
   }
-
 };
-#endif
 #endif

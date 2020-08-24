@@ -13,4 +13,8 @@ read	KEYWORD2
 readPin	KEYWORD2
 readPins	KEYWORD2
 writePins	KEYWORD2
+writePin	KEYWORD2
 setSignalPin	KEYWORD2
+allOn	KEYWORD2
+allOff	KEYWORD2
+setBrightness	KEYWORD2

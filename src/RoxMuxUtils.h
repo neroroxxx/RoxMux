@@ -43,6 +43,5 @@ class RoxMuxFlags {
     void reset(){
       flags = 0;
     }
-}
-#endif
+};
 #endif

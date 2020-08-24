@@ -9,8 +9,8 @@ RoxMux is a Collection of Multiplexer Controllers for some commonly used multipl
 RoxMux includes support for:
 
 - [74HC165](docs/74HC165.md)
-- [74HC595 (still under development)](docs/74HC595.md)
+- [74HC595](docs/74HC595.md)
 - [74HC4067](docs/74HC4067.md)
 - [74HC4051](docs/74HC4067.md)
 
-See examples for code information
+See examples for code information.
