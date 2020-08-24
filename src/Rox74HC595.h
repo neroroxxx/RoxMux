@@ -17,7 +17,7 @@
 
 #define ROXMUX_74HC595_FLAG_CHANGED 0
 
-#define ROXMUX_74HC595_DELAY 5
+#define ROXMUX_74HC595_DELAY 1
 
 template <uint8_t _muxCount>
 class Rox74HC595 {
@@ -27,7 +27,7 @@ private:
   int8_t clkPin     = -1;
   int8_t latchPin   = -1;
   int8_t dataPin    = -1;
-  int8_t pwmPin      = -1;
+  int8_t pwmPin     = -1;
 
   void _updateMuxReverse(){
     for(int mux = _muxCount-1; mux >= 0; mux--){
