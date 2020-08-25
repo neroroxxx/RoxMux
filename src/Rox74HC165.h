@@ -16,7 +16,7 @@
 
 #include <Arduino.h>
 
-#define ROXMUX_74HC165_DELAY 5
+#define ROXMUX_74HC165_DELAY 1
 
 template <uint8_t _muxCount>
 class Rox74HC165 {
