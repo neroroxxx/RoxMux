@@ -13,6 +13,13 @@ RoxMux includes support for:
 - [74HC4067](docs/74HC4067.md)
 - [74HC4051](docs/74HC4067.md)
 
+In Addition as of Version 1.1.3 RoxMux has a class to read buttons called RoxButton. This class
+allows you to read a button connected directly to a pin or a multiplexer.
+RoxMux also allows you to read/debounce and detect a Press, Release and if the button
+was held!
+
+- [RoxButton](docs/RoxButton.md)
+
 See examples for code information.
 
 RoxMux containes multiple libraries in one, just include `<RoxMux.h>` to get started. All the libraries are templated to reduce RAM usage.
