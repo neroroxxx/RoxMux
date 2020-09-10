@@ -6,10 +6,13 @@
 #define RoxMux_h
 
 #include <Arduino.h>
-#include "RoxMuxUtils.h"
+#include "RoxFlags.h"
 #include "Rox74HC40XX.h"
 #include "Rox74HC165.h"
 #include "Rox74HC595.h"
+#include "RoxMCP2301X.h"
 #include "RoxButton.h"
+#include "RoxEncoder.h"
+#include "RoxPot.h"
 
 #endif

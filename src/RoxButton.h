@@ -1,6 +1,9 @@
 /*
   https://www.RoxXxtar.com/bmc
   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+  This is a basic port from the button utility of BMC
+  https://github.com/neroroxxx/BMC
 */
 #ifndef RoxButton_h
 #define RoxButton_h
@@ -21,7 +24,7 @@ class RoxButton {
   private:
     unsigned long debounce = 0;
     unsigned long holdDebounce = 0;
-    RoxMuxFlags <uint8_t> flags;
+    RoxFlags <uint8_t> flags;
     bool isPressed(){
       return flags.read(ROX_BTN_STATE);
     }

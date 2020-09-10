@@ -13,7 +13,7 @@
 #ifndef Rox74HC595_h
 #define Rox74HC595_h
 
-#include "RoxMuxUtils.h"
+#include "RoxFlags.h"
 
 #define ROXMUX_74HC595_FLAG_CHANGED 0
 
@@ -23,7 +23,7 @@ template <uint8_t _muxCount>
 class Rox74HC595 {
 private:
   uint8_t states[_muxCount];
-  RoxMuxFlags <uint8_t> flags;
+  RoxFlags <uint8_t> flags;
   int8_t clkPin     = -1;
   int8_t latchPin   = -1;
   int8_t dataPin    = -1;

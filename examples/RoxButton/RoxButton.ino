@@ -39,12 +39,12 @@ void loop(){
   //    state to RoxButton and the class will do the job for you.
   //    ROXBUTTON WILL DEBOUNCE THE READING, DO NO DEBOUNCE IT YOURSELF.
 
-  // #2 the debounce time, this value is in milliseconds, default 50ms
+  // #2 (optional) the debounce time, this value is in milliseconds, default: 50ms
   //    this is how long to wait before reading the button again
 
-  // #3 the state of the button when it's active, if your pin has a pullup resisitor
-  //    then the active state will be LOW, if it's a pulldown resistor then the
-  //    active state is HIGH.
+  // #3 (optional) the state of the button when it's active,
+  //    if your pin has a pullup resisitor then the active state will be LOW,
+  //    if it's a pulldown resistor then the active state is HIGH.
   button.update(digitalRead(0), 50, LOW);
   // the .held() function can take the time in milliseconds that you want to hold
   // the button for, if no value is passed the default 500ms will be used

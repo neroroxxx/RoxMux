@@ -12,13 +12,19 @@ RoxMux includes support for:
 - [74HC595](docs/74HC595.md)
 - [74HC4067](docs/74HC4067.md)
 - [74HC4051](docs/74HC4067.md)
+- [MCP23017](docs/MCP23017.md) *(supported as of version 1.1.4)*
+- [MCP23018](docs/MCP23017.md) *(supported as of version 1.1.4)*
 
 In Addition as of Version 1.1.3 RoxMux has a class to read buttons called RoxButton. This class
 allows you to read a button connected directly to a pin or a multiplexer.
 RoxMux also allows you to read/debounce and detect a Press, Release and if the button
 was held!
 
-- [RoxButton](docs/RoxButton.md)
+Version 1.1.4 adds support for encoders and pots reading.
+
+- [RoxButton](docs/RoxButton.md) *(supported as of version 1.1.3)*
+- [RoxEncoder](docs/RoxEncoder.md) *(supported as of version 1.1.4)*
+- [RoxPot](docs/RoxPot.md) *(supported as of version 1.1.4)*
 
 See examples for code information.
 
@@ -270,6 +276,66 @@ void loop(){
 }
 ```
 
+### MCP23017 or MCP23018
+```c++
+#include <RoxMux.h>
+
+// 0x20 is the address of the MCP2301X chip
+// if you plan on using multiple MCPs just create an instance for each one
+// and pass the address
+// change to RoxMCP23018 if you want for the MCP23018 tho both work with the same code
+RoxMCP23017 <0x20> mux;
+
+void setup(){
+  // begin the mux, the parameter passed determines the i2c speed, normal or fast
+  // true is fast @ 400,000MHz, false is normal @ 100,000MHz
+  mux.begin(true);
+  // ALWAYS CALL .pinMode() in your setup as it's only implemented once.
+  // a pin can not change it's mode on the fly only before the first time
+  // .update() is called
+
+  // set the first 8 pins as output and connect leds with resistors
+  mux.pinMode(0, OUTPUT); // pin 0 = GPA0 of MCP2301X
+  mux.pinMode(1, OUTPUT); // pin 1 = GPA1 of MCP2301X
+  mux.pinMode(2, OUTPUT); // pin 2 = GPA2 of MCP2301X
+  mux.pinMode(3, OUTPUT); // pin 3 = GPA3 of MCP2301X
+  mux.pinMode(4, OUTPUT); // pin 4 = GPA4 of MCP2301X
+  mux.pinMode(5, OUTPUT); // pin 5 = GPA5 of MCP2301X
+  mux.pinMode(6, OUTPUT); // pin 6 = GPA6 of MCP2301X
+  mux.pinMode(7, OUTPUT); // pin 7 = GPA7 of MCP2301X
+
+  // set the last 8 pins as inputs with the built in pullup resistor
+  // wire a momentary button for each of these pins on one end the other to ground
+  mux.pinMode(8,  INPUT_PULLUP); // pin 8  = GPB0 of MCP2301X
+  mux.pinMode(9,  INPUT_PULLUP); // pin 9  = GPB1 of MCP2301X
+  mux.pinMode(10, INPUT_PULLUP); // pin 10 = GPB2 of MCP2301X
+  mux.pinMode(11, INPUT_PULLUP); // pin 11 = GPB3 of MCP2301X
+  mux.pinMode(12, INPUT_PULLUP); // pin 12 = GPB4 of MCP2301X
+  mux.pinMode(13, INPUT_PULLUP); // pin 13 = GPB5 of MCP2301X
+  mux.pinMode(14, INPUT_PULLUP); // pin 14 = GPB6 of MCP2301X
+  mux.pinMode(15, INPUT_PULLUP); // pin 15 = GPB7 of MCP2301X
+}
+void loop(){
+  // update the mux readings
+  // the parameter passed is for a delay or wait in milliseconds, default: 1ms
+  // this delay does NOT use the arduino delay() function, instead it uses
+  // millis() so it is non-blocking, this delay is used to avoid reading the MCP
+  // too often which would slow down your program.
+  // you may set this value to 0 if you don't want any delay between readings.
+  // all 16 pins are read at the same time, the state of inputs and outputs is
+  // held in ram by the library so you can check what the last state of a pin was.
+  mux.update(1);
+  for(uint8_t i=0;i<8;i++){
+    // turn each led on when you press the corresponding button, in otherwords
+    // if you press the button connected to pin 8, the led in pin 0 will turn on
+    // if you press the button connected to pin 9, the led in pin 1 will turn on
+    // if you press the button connected to pin 10, the led in pin 2 will turn on
+    // and so on
+    mux.digitalWrite(i, !mux.digitalRead(i+8));
+  }
+}
+```
+
 ### RoxButton
 ```c++
 #include <RoxMux.h>
@@ -321,5 +387,108 @@ void loop(){
   }
   // if you only want to know if the button was held then
   digitalWrite(13, button.getCurrentState());
+}
+```
+
+### RoxEncoder
+```c++
+#include <RoxMux.h>
+
+RoxEncoder encoder;
+
+void setup(){
+  // for this example pin 0 and 1 on my teensy are connected to an encoder
+  pinMode(0, INPUT);
+  pinMode(1, INPUT);
+  // start the serial monitor and print a line
+  Serial.begin(115200);
+  Serial.println("RoxEncoder Example");
+  // little delay before starting
+  delay(100);
+  // the .begin() method starts the debouncing timer
+  encoder.begin();
+}
+
+void loop(){
+  // 3 parameters passed to update method
+
+  // #1 the actual state of the encoder Pin A, in this case we passs the output of digitalRead
+  //    RoxEncoder doesn't read the pin itself so you have to pass the state of
+  //    the pin, this is because RoxEncoder is meant to also work with Multiplexer
+  //    outputs, so you have to read your pin or mux pin and then give that
+  //    state to RoxEncoder and the class will do the job for you.
+  //    ROXENCODER WILL DEBOUNCE THE READING, DO NO DEBOUNCE IT YOURSELF.
+
+  // #2 same as #1 but for Pin B of the encoder
+
+  // #3 the debounce time, this value is in milliseconds, default 1ms
+  //    this is how long to wait before reading the encoder again
+  //    this is needed to clean some of the noise on the encoders.
+  //    this value is 8-bits so keep it between 0 and 255
+
+  // #4 the state of the encoder pins when they're active,
+  //    if your pin has a pullup resisitor then the active state will be LOW,
+  //    if it's a pulldown resistor then the active state is HIGH.
+  encoder.update(digitalRead(0), digitalRead(1), 2, LOW);
+
+  // the update method will read the encoder and if can be used to test if
+  // there was movement, however you can also use .read() after the update
+  // to check if there was movement
+
+  // .read() checks if the encoder was rotated
+  if(encoder.read()){
+    // encoder has been rotated
+    Serial.print("Encoder rotated ");
+    // .increased() tells us if the encoder was rotated clockwise
+    // you can also use .clockwise()
+    // if this method returns false the encoder was rotated counter-clockwise
+    if(encoder.increased()){
+      Serial.println("Clockwise");
+    } else {
+      Serial.println("Counter-Clockwise");
+    }
+  }
+}
+```
+
+### RoxPot
+```c++
+#include <RoxMux.h>
+
+RoxPot pot;
+
+void setup(){
+  // for this example pin 0 and 1 on my teensy are connected to an pot
+  pinMode(23, INPUT);
+  // start the serial monitor and print a line
+  Serial.begin(115200);
+  Serial.println("RoxPot Example");
+  // little delay before starting
+  delay(100);
+  // the .begin() method starts the debouncing timer
+  pot.begin();
+}
+
+void loop(){
+  // 2 parameters passed to update method
+
+  // #1 the actual reading of the pot, in this case we passs the output of analogRead
+  //    RoxPot doesn't read the pin itself so you have to pass the state of
+  //    the pin, this is because RoxPot is meant to also work with Multiplexer
+  //    outputs, so you have to read your pin or mux pin and then give that
+  //    state to RoxPot and the class will do the job for you.
+
+  // #2 (optional) debounce time in milliseconds, default: 1ms
+  //    this value is used to debounce the pot, the potentiometer may have some
+  //    noise to it and this can help remove some of it, add a 0.1uF capacitor
+  //    between the pin and ground to remove additional noise
+  //    Debouncing time is 8-bits so keep value at 0 to 255ms
+
+  //    ROXPOT WILL LOWER THE RESOLUTION OF THE READING TO 7-BITS!!!
+  if(pot.update(analogRead(23), 1)){
+    uint8_t newPotReading = pot.read();
+    Serial.print("Pot value: ");
+    Serial.println(newPotReading);
+  }
 }
 ```

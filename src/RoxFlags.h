@@ -10,15 +10,15 @@
 
   Use at your own risk.
 */
-#ifndef RoxMuxUtils_h
-#define RoxMuxUtils_h
+#ifndef RoxFlags_h
+#define RoxFlags_h
 
 template <typename T>
-class RoxMuxFlags {
+class RoxFlags {
   private:
     T flags;
   public:
-    RoxMuxFlags(){
+    RoxFlags(){
       reset();
     }
     bool read(uint8_t bit){
