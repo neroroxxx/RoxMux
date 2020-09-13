@@ -32,6 +32,20 @@ RoxMux containes multiple libraries in one, just include `<RoxMux.h>` to get sta
 
 No matter which mux or utility you will be using, you always have to include `#include <RoxMux.h>` this file will include all the RoxMux controllers.
 
+## Change Log
+### **[v1.1.5](releases/tag/v1.1.5)**
+
+- Adds Blinking for 74HC595 Leds
+
+### **[v1.1.4](releases/tag/v1.1.4)**
+- Adds Support for MCP23017/8 inputs and outputs
+- Adds RoxEncoder, Encoder/debouncer reader for Direct Pin or Mux
+- Adds RoxPot, Pot reader/debouncer for Direct Pin or Mux
+
+### **[v1.1.3](releases/tag/v1.1.3)**
+- Adds RoxButton, Button reader/debouncer for Direct Pin or Mux
+
+## Examples
 
 ### 74HC595
 This is a simple example to write to a 74HC595, change `MUX_TOTAL` to the number of chainged 74HC595s you have wired.
