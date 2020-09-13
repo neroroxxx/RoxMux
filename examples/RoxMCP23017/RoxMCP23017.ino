@@ -29,7 +29,7 @@ RoxMCP23017 <0x20> mux;
 
 void setup(){
   // begin the mux, the parameter passed determines the i2c speed, normal or fast
-  // true is fast @ 400,000MHz, false is normal @ 100,000MHz
+  // true is fast @ 400kbit/s, false is standard @ 100kbit/s
   mux.begin(true);
   // ALWAYS CALL .pinMode() in your setup as it's only implemented once.
   // a pin can not change it's mode on the fly only before the first time

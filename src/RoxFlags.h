@@ -33,6 +33,11 @@ class RoxFlags {
     void off(uint8_t bit){
       bitWrite(flags, bit, 0);
     }
+    // toggle and return new value
+    bool toggle(uint8_t bit){
+      flags ^= 1UL << bit;
+      return bitRead(flags, bit);
+    }
     bool toggleIfTrue(uint8_t bit){
       if(bitRead(flags, bit)){
         bitClear(flags, bit);

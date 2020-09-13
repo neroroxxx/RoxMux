@@ -30,6 +30,8 @@ See examples for code information.
 
 RoxMux containes multiple libraries in one, just include `<RoxMux.h>` to get started. All the libraries are templated to reduce RAM usage.
 
+No matter which mux or utility you will be using, you always have to include `#include <RoxMux.h>` this file will include all the RoxMux controllers.
+
 
 ### 74HC595
 This is a simple example to write to a 74HC595, change `MUX_TOTAL` to the number of chainged 74HC595s you have wired.
@@ -40,7 +42,13 @@ This is a simple example to write to a 74HC595, change `MUX_TOTAL` to the number
 // MUX_TOTAL is the number of 74HC595s that you have chained together
 // if you have more than 1 then change it to that number.
 #define MUX_TOTAL 1
-Rox74HC595 <MUX_TOTAL> mux;
+// blinking was added to version 1.1.5 of RoxMux
+// BLINK_RATE determines the speed at which any led set to BLINK will turn on/off
+// you have to use .blinkPin(pinNumber, true/false) to turn blinking on/off
+// per pin, also an led will only blink if it's turned on
+#define BLINK_RATE 50
+
+Rox74HC595 <MUX_TOTAL, BLINK_RATE> mux;
 
 // pins for 74HC595
 #define PIN_DATA    11 // pin 14 on 74HC595 (DATA)
@@ -53,7 +61,7 @@ Rox74HC595 <MUX_TOTAL> mux;
 // pin 13 on the 74HC595 to ground.
 #define PIN_PWM     10  // pin 13 on 74HC595
 
-// Wire pin 11 to VCC
+// Wire pin 10 to VCC
 
 unsigned long prevTime = 0;
 uint8_t counter = 0;
@@ -64,26 +72,37 @@ uint8_t brightness = 255;
 
 void setup(){
   mux.begin(PIN_DATA, PIN_LATCH, PIN_CLK, PIN_PWM);
+  prevTime = millis();
+
   // set the brightness, only works if you set and wired a PWM pin
   // 0 will turn them off, 255 will do a digitalWrite HIGH
   mux.setBrightness(brightness);
-  // used for timing so we don't have to use a delay()
-  prevTime = millis();
+
+  // as of version 1.1.5 you can blink independent leds, you must set
+  // the blink state via .blinkPin(pinNumber, true/false)
+  // after that anytime you turn the led on, the led will blink instead of
+  // just staying on.
+
+  // You can set the blink rate as part of the instance declaration
+
+  // set every other led to blink instead of staying on
+  mux.blinkPin(0, true);
+  mux.blinkPin(2, true);
+  mux.blinkPin(4, true);
+  mux.blinkPin(6, true);
+
 }
 
 void loop(){
   // the update() method will only write to the 74HC595 whenever a pin value
-  // has changed from it's buffer. Always call this method in the loop()
+  // has changed from it's buffer.
   mux.update();
 
-  // turn each led on then off every 500 milliseconds
-  if((millis()-prevTime) > 500){
-    // turn off all LEDs in the buffer
+  // turn each led on then off every second
+  if((millis()-prevTime) > 1000){
+    // change the brightness every
     mux.allOff();
-    // now turn on an led, writing to the 595 will only take place when mux.update()
-    // is called, this way you can update as many LEDs then draw them.
     mux.writePin(counter, HIGH);
-
     counter++;
     if(counter >= totalPins){
       counter = 0;
@@ -93,8 +112,7 @@ void loop(){
 }
 ```
 
-
-### 74HC195
+### 74HC165
 This is a simple example to read from a 74HC165, change `MUX_TOTAL` to the number of chainged 74HC165s you have wired.
 
 ```c++
@@ -288,7 +306,7 @@ RoxMCP23017 <0x20> mux;
 
 void setup(){
   // begin the mux, the parameter passed determines the i2c speed, normal or fast
-  // true is fast @ 400,000MHz, false is normal @ 100,000MHz
+  // true is fast @ 400kbit/s, false is standard @ 100kbit/s
   mux.begin(true);
   // ALWAYS CALL .pinMode() in your setup as it's only implemented once.
   // a pin can not change it's mode on the fly only before the first time

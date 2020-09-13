@@ -16,13 +16,17 @@
 #include "RoxFlags.h"
 
 #define ROXMUX_74HC595_FLAG_CHANGED 0
+#define ROXMUX_74HC595_FLAG_BLINK_ENABLED 1
+#define ROXMUX_74HC595_FLAG_BLINK_STATE 2
 
 #define ROXMUX_74HC595_DELAY 1
 
-template <uint8_t _muxCount>
+template <uint8_t _muxCount, uint16_t blinkSpeed=50>
 class Rox74HC595 {
 private:
   uint8_t states[_muxCount];
+  uint8_t blinkStates[_muxCount];
+  unsigned long blinkTimer;
   RoxFlags <uint8_t> flags;
   int8_t clkPin     = -1;
   int8_t latchPin   = -1;
@@ -44,7 +48,16 @@ private:
     }
   }
   void _writeToMux(uint8_t mux, uint8_t mask){
-    digitalWrite(dataPin, (states[mux] & mask));
+    if(flags.read(ROXMUX_74HC595_FLAG_BLINK_ENABLED)){
+      if((states[mux] & mask) && (blinkStates[mux] & mask)){
+        digitalWrite(dataPin, flags.read(ROXMUX_74HC595_FLAG_BLINK_STATE));
+      } else {
+        digitalWrite(dataPin, (states[mux] & mask));
+      }
+    } else {
+      digitalWrite(dataPin, (states[mux] & mask));
+    }
+
     digitalWrite(clkPin, HIGH);
 #if ROXMUX_74HC595_DELAY > 0
     delayMicroseconds(ROXMUX_74HC595_DELAY);
@@ -90,6 +103,13 @@ public:
       }
       digitalWrite(latchPin, HIGH);
     }
+    if((millis()-blinkTimer)>=blinkSpeed){
+      if(flags.read(ROXMUX_74HC595_FLAG_BLINK_ENABLED)){
+        flags.on(ROXMUX_74HC595_FLAG_CHANGED);
+        flags.toggle(ROXMUX_74HC595_FLAG_BLINK_STATE);
+      }
+      blinkTimer = millis();
+    }
   }
   void setBrightness(uint8_t value){
     if(pwmPin > -1){
@@ -126,6 +146,34 @@ public:
       flags.on(ROXMUX_74HC595_FLAG_CHANGED);
     }
     bitWrite(states[muxIndex], t_pin, on);
+  }
+  void togglePin(uint16_t t_pin){
+    uint8_t muxIndex = (uint8_t)floor(t_pin/8.0);
+    if(muxIndex>0){
+      t_pin -= (muxIndex*8);
+    }
+    bool state = bitRead(states[muxIndex], t_pin);
+    bitWrite(states[muxIndex], t_pin, !state);
+    flags.on(ROXMUX_74HC595_FLAG_CHANGED);
+  }
+  void blinkPin(uint16_t t_pin, bool on){
+    uint8_t muxIndex = (uint8_t)floor(t_pin/8.0);
+    if(muxIndex>0){
+      t_pin -= (muxIndex*8);
+    }
+    if(bitRead(blinkStates[muxIndex], t_pin) != on){
+      flags.on(ROXMUX_74HC595_FLAG_CHANGED);
+      bitWrite(blinkStates[muxIndex], t_pin, on);
+    }
+    // turn the flag on then check if any other blink states are on
+    flags.off(ROXMUX_74HC595_FLAG_BLINK_ENABLED);
+    for(uint8_t i=0;i<_muxCount;i++){
+      if(blinkStates[i]>0){
+        flags.on(ROXMUX_74HC595_FLAG_BLINK_ENABLED);
+        break;
+      }
+    }
+
   }
 };
 #endif

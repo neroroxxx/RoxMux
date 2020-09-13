@@ -19,40 +19,76 @@ Give it a try and see for yourself!
 ```c++
 #include <RoxMux.h>
 
-RoxPot pot;
+// MUX_TOTAL is the number of 74HC595s that you have chained together
+// if you have more than 1 then change it to that number.
+#define MUX_TOTAL 1
+// blinking was added to version 1.1.5 of RoxMux
+// BLINK_RATE determines the speed at which any led set to BLINK will turn on/off
+// you have to use .blinkPin(pinNumber, true/false) to turn blinking on/off
+// per pin, also an led will only blink if it's turned on
+#define BLINK_RATE 50
+
+Rox74HC595 <MUX_TOTAL, BLINK_RATE> mux;
+
+// pins for 74HC595
+#define PIN_DATA    11 // pin 14 on 74HC595 (DATA)
+#define PIN_LATCH   9  // pin 12 on 74HC595 (LATCH)
+#define PIN_CLK     8  // pin 11 on 74HC595 (CLK)
+
+// PIN_PWM MUST BE A PWM CAPABLE PIN
+// set it's value to -1 if you do not wish to control the brightness
+// if you don't need to control the brightness you must wire
+// pin 13 on the 74HC595 to ground.
+#define PIN_PWM     10  // pin 13 on 74HC595
+
+// Wire pin 10 to VCC
+
+unsigned long prevTime = 0;
+uint8_t counter = 0;
+const uint16_t totalPins = 8 * MUX_TOTAL;
+
+// if you use a PWM pin you can set the brightness for all LEDs.
+uint8_t brightness = 255;
 
 void setup(){
-  // for this example pin 0 and 1 on my teensy are connected to an pot
-  pinMode(23, INPUT);
-  // start the serial monitor and print a line
-  Serial.begin(115200);
-  Serial.println("RoxPot Example");
-  // little delay before starting
-  delay(100);
-  // the .begin() method starts the debouncing timer
-  pot.begin();
+  mux.begin(PIN_DATA, PIN_LATCH, PIN_CLK, PIN_PWM);
+  prevTime = millis();
+
+  // set the brightness, only works if you set and wired a PWM pin
+  // 0 will turn them off, 255 will do a digitalWrite HIGH
+  mux.setBrightness(brightness);
+
+  // as of version 1.1.5 you can blink independent leds, you must set
+  // the blink state via .blinkPin(pinNumber, true/false)
+  // after that anytime you turn the led on, the led will blink instead of
+  // just staying on.
+
+  // You can set the blink rate as part of the instance declaration
+
+  // set every other led to blink instead of staying on
+  mux.blinkPin(0, true);
+  mux.blinkPin(2, true);
+  mux.blinkPin(4, true);
+  mux.blinkPin(6, true);
+
 }
 
 void loop(){
-  // 2 parameters passed to update method
+  // the update() method will only write to the 74HC595 whenever a pin value
+  // has changed from it's buffer.
+  mux.update();
 
-  // #1 the actual reading of the pot, in this case we passs the output of analogRead
-  //    RoxPot doesn't read the pin itself so you have to pass the state of
-  //    the pin, this is because RoxPot is meant to also work with Multiplexer
-  //    outputs, so you have to read your pin or mux pin and then give that
-  //    state to RoxPot and the class will do the job for you.
-
-  // #2 (optional) debounce time in milliseconds, default: 1ms
-  //    this value is used to debounce the pot, the potentiometer may have some
-  //    noise to it and this can help remove some of it, add a 0.1uF capacitor
-  //    between the pin and ground to remove additional noise
-  //    Debouncing time is 8-bits so keep value at 0 to 255ms
-
-  //    ROXPOT WILL LOWER THE RESOLUTION OF THE READING TO 7-BITS!!!
-  if(pot.update(analogRead(23), 1)){
-    uint8_t newPotReading = pot.read();
-    Serial.print("Pot value: ");
-    Serial.println(newPotReading);
+  // turn each led on then off every second
+  if((millis()-prevTime) > 1000){
+    // change the brightness every
+    mux.allOff();
+    mux.writePin(counter, HIGH);
+    counter++;
+    if(counter >= totalPins){
+      counter = 0;
+    }
+    prevTime = millis();
   }
 }
+
 ```

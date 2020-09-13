@@ -3,7 +3,13 @@
 // MUX_TOTAL is the number of 74HC595s that you have chained together
 // if you have more than 1 then change it to that number.
 #define MUX_TOTAL 1
-Rox74HC595 <MUX_TOTAL> mux;
+// blinking was added to version 1.1.5 of RoxMux
+// BLINK_RATE determines the speed at which any led set to BLINK will turn on/off
+// you have to use .blinkPin(pinNumber, true/false) to turn blinking on/off
+// per pin, also an led will only blink if it's turned on
+#define BLINK_RATE 50
+
+Rox74HC595 <MUX_TOTAL, BLINK_RATE> mux;
 
 // pins for 74HC595
 #define PIN_DATA    11 // pin 14 on 74HC595 (DATA)
@@ -16,7 +22,7 @@ Rox74HC595 <MUX_TOTAL> mux;
 // pin 13 on the 74HC595 to ground.
 #define PIN_PWM     10  // pin 13 on 74HC595
 
-// Wire pin 11 to VCC
+// Wire pin 10 to VCC
 
 unsigned long prevTime = 0;
 uint8_t counter = 0;
@@ -32,6 +38,20 @@ void setup(){
   // set the brightness, only works if you set and wired a PWM pin
   // 0 will turn them off, 255 will do a digitalWrite HIGH
   mux.setBrightness(brightness);
+
+  // as of version 1.1.5 you can blink independent leds, you must set
+  // the blink state via .blinkPin(pinNumber, true/false)
+  // after that anytime you turn the led on, the led will blink instead of
+  // just staying on.
+
+  // You can set the blink rate as part of the instance declaration
+
+  // set every other led to blink instead of staying on
+  mux.blinkPin(0, true);
+  mux.blinkPin(2, true);
+  mux.blinkPin(4, true);
+  mux.blinkPin(6, true);
+
 }
 
 void loop(){
@@ -39,8 +59,8 @@ void loop(){
   // has changed from it's buffer.
   mux.update();
 
-  // turn each led on then off every 500 milliseconds
-  if((millis()-prevTime) > 500){
+  // turn each led on then off every second
+  if((millis()-prevTime) > 1000){
     // change the brightness every
     mux.allOff();
     mux.writePin(counter, HIGH);
