@@ -30,7 +30,7 @@ Version 1.1.4 adds support for encoders and pots reading.
 
 Version 1.1.5 adds RoxLedMeter, a tool to create you a VU Meter with Leds.
 
-- [RoxLedMeter](docs/RoxLedMeter.md) *(available as of version 1.1.5)*
+- [RoxLedMeter](docs/RoxLedMeter.md) *(available as of version 1.1.6)*
 
 See examples for code information.
 
