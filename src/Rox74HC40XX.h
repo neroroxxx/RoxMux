@@ -47,8 +47,8 @@ class Rox74HC40XX {
       for(uint8_t i = 0 ; i < _muxChannels ; i++){
         pinMode(channels[i], OUTPUT);
       }
-      timeout = 0;
       delay(10);
+      timeout = millis();
     }
     // @n: the index of the mux
     // @pin: the pin on the teensy connected to that mux' signal pin
@@ -65,9 +65,9 @@ class Rox74HC40XX {
     // you can pass a value to this function in your sketch to change the
     // number of milliseconds between each pin read.
     void update(uint8_t readInterval=1){
-      if(timeout >= readInterval){
+      if(millis()-timeout >= readInterval){
         readMux();
-        timeout = 0;
+        timeout = millis();
       }
     }
     uint16_t read(uint16_t n){
@@ -81,7 +81,7 @@ private:
     uint8_t channels[_muxChannels];
     uint8_t signalPin[_muxCount];
     uint16_t values[_muxCount*_muxPins];
-    elapsedMillis timeout;
+    unsigned long timeout;
     const uint16_t totalPins = (_muxCount*_muxPins);
 
     void readMux(){
