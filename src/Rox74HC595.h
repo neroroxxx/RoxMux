@@ -147,6 +147,13 @@ public:
     }
     bitWrite(states[muxIndex], t_pin, on);
   }
+  bool readPin(uint16_t t_pin){
+    uint8_t muxIndex = (uint8_t)floor(t_pin/8.0);
+    if(muxIndex>0){
+      t_pin -= (muxIndex*8);
+    }
+    return bitRead(states[muxIndex], t_pin);
+  }
   void togglePin(uint16_t t_pin){
     uint8_t muxIndex = (uint8_t)floor(t_pin/8.0);
     if(muxIndex>0){
