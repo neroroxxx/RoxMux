@@ -6,6 +6,13 @@
 #define RoxMux_h
 
 #include <Arduino.h>
+
+// i2c errors
+#define ROX_I2C_ERROR_TOO_LONG  1
+#define ROX_I2C_ERROR_NACK_ADDR 2
+#define ROX_I2C_ERROR_NACK_DATA 3
+#define ROX_I2C_ERROR_OTHER     4
+
 #include "RoxFlags.h"
 #include "RoxTimer.h"
 #include "Rox74HC40XX.h"

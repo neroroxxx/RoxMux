@@ -75,8 +75,12 @@ private:
   }
   void setAllPinsModes(){
     // input or output
+    // set all to outputs by default
     writeData(ROX_MCP2301X_IO_MODE, ioData[0]);
+    writeData(ROX_MCP2301X_IO, 0);
     writeData(ROX_MCP2301X_IO_MODE+1, ioData[1]);
+    writeData(ROX_MCP2301X_IO+1, 0);
+
     // pullup resistor
     writeData(ROX_MCP2301X_PULLUP, pullupData[0]);
     writeData(ROX_MCP2301X_PULLUP+1, pullupData[1]);

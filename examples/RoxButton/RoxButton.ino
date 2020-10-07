@@ -27,6 +27,17 @@ void setup(){
   delay(100);
   // the .begin() method starts the debouncing timer
   button.begin();
+  // if you will be using double press then you can set the time interval between
+  // pressed in milliseconds, in the line below we set it to 300ms which is the
+  // default value.
+  // the double press is triggered based on the first release and next press of the button
+  // that is if the button is currentley in it's open state, and it changes to
+  // it's closed state, as soon as it goes back to the open state a flag is set
+  // in which case the program will wait for the next time the button goes into
+  // it's closed state, as soon as the button goes into the closed state then
+  // another check is performed in which case if that 2nd pressed happened in less
+  // than 300 milliseconds then that's a double press.
+  button.setDoublePressThreshold(300);
 }
 
 void loop(){
@@ -46,12 +57,27 @@ void loop(){
   //    if your pin has a pullup resisitor then the active state will be LOW,
   //    if it's a pulldown resistor then the active state is HIGH.
   button.update(digitalRead(0), 50, LOW);
+
   // the .held() function can take the time in milliseconds that you want to hold
   // the button for, if no value is passed the default 500ms will be used
   if(button.held()){
+
     Serial.println("* Button has been held for 500 milliseconds");
+
+  } else if(button.doublePressed()){
+
+    // NOTE: when you first press a release a button both the press and release
+    // will be triggered, however if you press the button a second time within
+    // the default 300ms time for double press, neither the press nor the release
+    // will be triggered, only the double press,
+    // if you want to trigger the release of the button after a double press
+    // you can pass true to the .doublePressed(true) function
+    Serial.println("& Button has been double pressed");
+
   } else if(button.pressed()){
+
     Serial.println("+ Button has been pressed");
+
   } else if(button.released(true)){
     // you can pass a boolean (true or false) to the .released() method
     // this boolean will determine if the release should be triggered after

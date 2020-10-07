@@ -17,8 +17,7 @@ RoxMux includes support for:
 
 In Addition as of Version 1.1.3 RoxMux has a class to read buttons called RoxButton. This class
 allows you to read a button connected directly to a pin or a multiplexer.
-RoxMux also allows you to read/debounce and detect a Press, Release and if the button
-was held!
+RoxMux also allows you to read/debounce and detect a Press, Release and if the button was held! As of Version 1.1.8 buttons can also detect a double press.
 
 
 Version 1.1.4 adds support for encoders and pots reading.
