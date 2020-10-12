@@ -36,6 +36,8 @@ clockwise	KEYWORD2
 counterClockwise	KEYWORD2
 onUpdate	KEYWORD2
 setValue	KEYWORD2
+latched	KEYWORD2
+unlatched	KEYWORD2
 
 complete	KEYWORD2
 reached	KEYWORD2

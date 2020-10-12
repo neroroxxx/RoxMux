@@ -27,9 +27,11 @@ Version 1.1.4 adds support for encoders and pots reading.
 - [RoxPot](docs/RoxPot.md) *(available as of version 1.1.4)*
 
 
-Version 1.1.5 adds RoxLedMeter, a tool to create you a VU Meter with Leds.
+Version 1.1.5 adds RoxLedMeter, a tool to create a VU Meter with Leds.
 
 - [RoxLedMeter](docs/RoxLedMeter.md) *(available as of version 1.1.6)*
+
+Version 1.1.9 adds `.latched()` and `.unlatched()` to RoxButton for latching switches see the examples.
 
 See examples for code information.
 

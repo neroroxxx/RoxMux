@@ -151,6 +151,12 @@ class RoxButton {
       }
       return false;
     }
+    bool latched(){
+      return stateChanged() && isPressed();
+    }
+    bool unlatched(){
+      return stateChanged() && !isPressed();
+    }
     bool getCurrentState(){
       return isPressed();
     }
