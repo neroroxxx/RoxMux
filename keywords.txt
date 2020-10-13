@@ -18,6 +18,7 @@ RoxTimer	KEYWORD1
 RoxMicroTimer	KEYWORD1
 RoxEndlessTimer	KEYWORD1
 RoxMicroEndless	KEYWORD1
+RoxScroller	KEYWORD1
 
 begin	KEYWORD2
 update	KEYWORD2
@@ -47,3 +48,11 @@ active	KEYWORD2
 end	KEYWORD2
 stop	KEYWORD2
 trigger	KEYWORD2
+
+up	KEYWORD2
+down	KEYWORD2
+upAccurate	KEYWORD2
+downAccurate	KEYWORD2
+
+ROX_DEBUG	LITERAL1
+ROX_PRINTLN	LITERAL1

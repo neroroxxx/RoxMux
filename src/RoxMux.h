@@ -13,8 +13,10 @@
 #define ROX_I2C_ERROR_NACK_DATA 3
 #define ROX_I2C_ERROR_OTHER     4
 
+#include "RoxDebug.h"
 #include "RoxFlags.h"
 #include "RoxTimer.h"
+#include "RoxScroller.h"
 #include "Rox74HC40XX.h"
 #include "Rox74HC165.h"
 #include "Rox74HC595.h"
