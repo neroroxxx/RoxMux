@@ -31,7 +31,11 @@ Version 1.1.5 adds RoxLedMeter, a tool to create a VU Meter with Leds.
 
 - [RoxLedMeter](docs/RoxLedMeter.md) *(available as of version 1.1.6)*
 
-Version 1.1.9 adds `.latched()` and `.unlatched()` to RoxButton for latching switches see the examples.
+Version 1.1.9 adds `.latched()` and `.unlatched()` to RoxButton for latching switches, see the examples.
+
+Version 1.2.1 adds support for the `TCA9548A` i2c Multiplexer!
+
+- [RoxTCA9548A](docs/RoxTCA9548A.md) *(available as of version 1.2.1)*
 
 See examples for code information.
 

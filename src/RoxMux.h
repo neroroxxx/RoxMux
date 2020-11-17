@@ -25,5 +25,6 @@
 #include "RoxButton.h"
 #include "RoxEncoder.h"
 #include "RoxPot.h"
+#include "RoxTCA9548A.h"
 
 #endif
