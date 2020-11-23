@@ -4,7 +4,7 @@
 
 # RoxMux
 
-RoxMux is a Collection of Multiplexer Controllers for some commonly used multiplexer chips.
+RoxMux is a Collection of Multiplexer Controllers for some commonly used multiplexer chips. Compatible with Teensy and most Arduino boards.
 
 RoxMux includes support for:
 

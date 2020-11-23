@@ -14,6 +14,7 @@
 #define Rox74HC595_h
 
 #include "RoxFlags.h"
+#include "RoxLed.h"
 
 #define ROXMUX_74HC595_FLAG_CHANGED 0
 #define ROXMUX_74HC595_FLAG_BLINK_ENABLED 1
@@ -135,6 +136,14 @@ public:
       }
     }
     memset(states, 255, _muxCount);
+  }
+  void ledControl(uint8_t pin, RoxLed &t_led, uint8_t rate=75){
+    uint8_t cmd = t_led.update(rate);
+    if(cmd==1){
+      writePin(pin, LOW);
+    } else if(cmd==2){
+      writePin(pin, HIGH);
+    }
   }
   // expects a zero-index value
   void writePin(uint16_t t_pin, bool on){

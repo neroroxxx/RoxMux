@@ -22,6 +22,7 @@
 #define RoxMCP2301X_h
 
 #include "RoxFlags.h"
+#include "RoxLed.h"
 #include "Wire.h"
 
 // pin mode
@@ -130,6 +131,14 @@ public:
     }
     // now we can read the MCP
     readPins();
+  }
+  void ledControl(uint8_t pin, RoxLed &t_led, uint8_t rate=75){
+    uint8_t cmd = t_led.update(rate);
+    if(cmd==1){
+      digitalWrite(pin, LOW);
+    } else if(cmd==2){
+      digitalWrite(pin, HIGH);
+    }
   }
   bool digitalRead(uint8_t pin){
     uint8_t index = (pin > 7) ? 1 : 0;
