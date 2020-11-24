@@ -29,7 +29,7 @@ private:
     return flags.read(ROX_LED_FLAG_MODE_PULSE);
   }
   bool stateChanged(){
-    return flags.read(ROX_LED_FLAG_LED_STATE_CHANGED);
+    return flags.toggleIfTrue(ROX_LED_FLAG_LED_STATE_CHANGED);
   }
   bool toggleBlinkState(){
     return flags.toggle(ROX_LED_FLAG_LED_BLINK_STATE);
@@ -43,10 +43,14 @@ private:
       flags.write(ROX_LED_FLAG_LED_STATE_CHANGED, t_changed);
     }
   }
-  void pinControl(bool state){
+  bool pinControl(bool state){
     if(pin >= 0){
       digitalWrite(pin, state);
     }
+    return isOn();
+  }
+  bool getPulseState(){
+    return flags.read(ROX_LED_FLAG_LED_BLINK_STATE);
   }
 public:
   RoxLed(){
@@ -86,51 +90,42 @@ public:
     setLedState(state);
     return state;
   }
-  uint8_t update(uint8_t rate=75){
+  uint8_t updateBPM(uint16_t beatsPerMinute=120){
+    return update(60000/beatsPerMinute);
+  }
+  uint8_t update(uint16_t rate=75){
+    bool ret = false;
     // led is off
-    if(!ledOn()){
-      // check if it was recently turned off
+    if(!isOn()){
       if(stateChanged()){
-        // it was recently turned off so return 1 to notify to turn the led off
-        pinControl(LOW);
-        // always return a value to notify if it's being used by a mux
-        return 1;
+        return pinControl(LOW) ? 1 : 0;
       }
       return 0;
     }
+    unsigned long timeout = (unsigned long) millis() - prevTime;
     // the led is in ON state
     if(blinkMode()){
       // it's in blinking mode
-      if(millis()-prevTime >= rate){
+      if(timeout >= rate){
         // time to toggle it
-        pinControl(toggleBlinkState());
+        ret = pinControl(toggleBlinkState());
         prevTime = millis();
-        return getBlinkState();
+        if(ret){
+          return getBlinkState() ? 2 : 1;
+        }
       }
     } else if(pulseMode()){
-      // we're in pulse mode, when you turn the led on, it will go on for
-      // x number of milliseconds then turn off
-      // first we'll check if the state has change, meaning the led was off
-      // and was recently turned on
-      if(stateChanged()){
-        // since the state changed and the led is now on that means we have to
-        // turn the actual led on
-        pinControl(HIGH);
-        prevTime = millis();
-        // return 2 to notify the mux that the led must be turned on
-        return 2;
-      } else {
-        // the state may hasnt changed so now we can start timing to turn it off
-        if(millis()-prevTime >= rate){
-          // the time passes so let's shut the led off
-          pinControl(LOW);
-          // the state of the led is now off, so turn the state off and
-          // also make sure that the state changed flag is off to avoid returning
-          // off
-          setLedState(false, false);
-          // return one so the mux can turn the led off
-          return 1;
+      if(flags.read(ROX_LED_FLAG_LED_BLINK_STATE)){
+        if(timeout >= 75){
+          flags.write(ROX_LED_FLAG_LED_BLINK_STATE, false);
+          return pinControl(LOW) ? 1 : 0;
         }
+      }
+      if(timeout >= rate){
+        flags.write(ROX_LED_FLAG_LED_BLINK_STATE, true);
+        ret = pinControl(HIGH);
+        prevTime = millis();
+        return ret ? 2 : 0;
       }
     } else {
       // neither pulse nor blink mode are enabled so the led just turns on/off
@@ -139,7 +134,7 @@ public:
         return isOn() ? 2 : 1;
       }
     }
-    return 0;
+    return ret;
   }
 };
 

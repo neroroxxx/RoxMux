@@ -37,6 +37,10 @@ Version 1.2.1 adds support for the `TCA9548A` i2c Multiplexer!
 
 - [RoxTCA9548A](docs/RoxTCA9548A.md) *(available as of version 1.2.1)*
 
+Version 1.3.0 adds `RoxLed`, utility to blink/pulse leds.
+
+- [RoxLed](docs/RoxLed.md) *(available as of version 1.3.0)*
+
 See examples for code information.
 
 RoxMux containes multiple libraries in one, just include `<RoxMux.h>` to get started. All the libraries are templated to reduce RAM usage.

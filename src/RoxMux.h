@@ -34,7 +34,7 @@
 #include "RoxButton.h"
 #include "RoxEncoder.h"
 #include "RoxPot.h"
-//#include "RoxLed.h"
-#include "RoxVuMeter.h"
+#include "RoxLed.h"
+#include "RoxLedMeter.h"
 
 #endif

@@ -6,7 +6,11 @@
   GPIO on MCP23017 goes like this:
   GPA0 = pin 0
   GPA1 = pin 1
-  ...
+  GPA2 = pin 2
+  GPA3 = pin 3
+  GPA4 = pin 4
+  GPA5 = pin 5
+  GPA6 = pin 6
   GPA7 = pin 7
   GPB0 = pin 8
   GPB1 = pin 9
@@ -16,6 +20,10 @@
   GPB5 = pin 13
   GPB6 = pin 14
   GPB7 = pin 15
+  The second MCP23017 will be
+  GPA0 = pin 16
+  GPA1 = pin 17
+  etc...
 
   DON'T FORGET TO ADD RESISTORS TO YOUR LED!!
 */
@@ -74,4 +82,5 @@ void loop(){
     // and so on
     mux.digitalWrite(i, !mux.digitalRead(i+8));
   }
+
 }

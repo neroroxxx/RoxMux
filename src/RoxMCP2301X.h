@@ -17,6 +17,28 @@
   Initial Address 0x20
 
   Use at your own risk.
+
+  GPIO on MCP23017 goes like this:
+  GPA0 = pin 0
+  GPA1 = pin 1
+  GPA2 = pin 2
+  GPA3 = pin 3
+  GPA4 = pin 4
+  GPA5 = pin 5
+  GPA6 = pin 6
+  GPA7 = pin 7
+  GPB0 = pin 8
+  GPB1 = pin 9
+  GPB2 = pin 10
+  GPB3 = pin 11
+  GPB4 = pin 12
+  GPB5 = pin 13
+  GPB6 = pin 14
+  GPB7 = pin 15
+  The second MCP23017 will be
+  GPA0 = pin 16
+  GPA1 = pin 17
+  etc...
 */
 #ifndef RoxMCP2301X_h
 #define RoxMCP2301X_h
@@ -132,12 +154,12 @@ public:
     // now we can read the MCP
     readPins();
   }
-  void ledControl(uint8_t pin, RoxLed &t_led, uint8_t rate=75){
+  void ledControl(uint8_t pin, RoxLed &t_led, uint16_t rate=75){
     uint8_t cmd = t_led.update(rate);
     if(cmd==1){
-      digitalWrite(pin, LOW);
+      this->digitalWrite(pin, LOW);
     } else if(cmd==2){
-      digitalWrite(pin, HIGH);
+      this->digitalWrite(pin, HIGH);
     }
   }
   bool digitalRead(uint8_t pin){

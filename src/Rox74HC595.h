@@ -137,7 +137,7 @@ public:
     }
     memset(states, 255, _muxCount);
   }
-  void ledControl(uint8_t pin, RoxLed &t_led, uint8_t rate=75){
+  void ledControl(uint8_t pin, RoxLed &t_led, uint16_t rate=75){
     uint8_t cmd = t_led.update(rate);
     if(cmd==1){
       writePin(pin, LOW);

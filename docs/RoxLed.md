@@ -1,10 +1,27 @@
-/*
-  RoxLed lets you easily control an led without constantly doing a digitalWrite
-  With RoxLed you can turn the led on/off but in addition you can blink the led
-  (the led will turn on and off until you turn it off) and pulse it (the led will
-  turn on for a predetermined time then to turn off and stay off)
-  You can use RoxLed to directly control a pin or within Rox74HC595 and RoxMCP2301X
-*/
+*Under MIT license.*
+
+[RoxXxtar.com/bmc](https://www.roxxxtar.com/bmc)
+
+[<< Repository](../README.md)
+
+# RoxLed
+
+RoxLed is a simple utility to control an led, in it's most basic form it will
+let you turn LEDs on/off without constantly calling the digitalWrite function.
+
+In addition, RoxLed lets you easily blink and pulse an LED without the use of delay()
+RoxLed can also be used with the RoxMCP2301X and Rox74HC595.
+
+A RoxLed object must be created for each LED, RoxLed has 3 modes
+
+**ROX_DEFAULT** turn an LED ON/OFF
+**ROX_BLINK** blink an LED at the specified rate
+**ROX_PULSE** pulse an LED (turn it on for 75ms then off) every x milliseconds
+
+See the examples for more info
+
+
+```c++
 #include <RoxMux.h>
 
 // for this example we'll use the built-in led on pin 13
@@ -95,3 +112,4 @@ void loop(){
   // next time you call .on() the led will return to it's previous mode
   // led.off();
 }
+```
