@@ -7,6 +7,10 @@
 
 #include <Arduino.h>
 
+//RoxLatchingRelay and RoxNonLatchingRelay
+#define ROX_RESET 0
+#define ROX_SET 1
+
 //RoxLed Modes
 #define ROX_DEFAULT 0
 #define ROX_BLINK 1
@@ -36,5 +40,7 @@
 #include "RoxPot.h"
 #include "RoxLed.h"
 #include "RoxLedMeter.h"
+#include "RoxLatchingRelay.h"
+#include "RoxNonLatchingRelay.h"
 
 #endif

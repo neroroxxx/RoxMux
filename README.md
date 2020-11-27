@@ -41,6 +41,11 @@ Version 1.3.0 adds `RoxLed`, utility to blink/pulse leds.
 
 - [RoxLed](docs/RoxLed.md) *(available as of version 1.3.0)*
 
+Version 1.4.0 adds `RoxLatchingRelay` and `RoxNonLatchingRelay`, utility to blink/pulse leds.
+
+- [RoxLatchingRelay](docs/RoxLatchingRelay.md) *(available as of version 1.4.0)*
+- [RoxNonLatchingRelay](docs/RoxNonLatchingRelay.md) *(available as of version 1.4.0)*
+
 See examples for code information.
 
 RoxMux containes multiple libraries in one, just include `<RoxMux.h>` to get started. All the libraries are templated to reduce RAM usage.
