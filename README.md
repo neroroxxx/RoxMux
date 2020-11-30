@@ -46,6 +46,8 @@ Version 1.4.0 adds `RoxLatchingRelay` and `RoxNonLatchingRelay`, utility to blin
 - [RoxLatchingRelay](docs/RoxLatchingRelay.md) *(available as of version 1.4.0)*
 - [RoxNonLatchingRelay](docs/RoxNonLatchingRelay.md) *(available as of version 1.4.0)*
 
+Version 1.4.1 removes use of analogWrite when compiling for ESP32
+
 See examples for code information.
 
 RoxMux containes multiple libraries in one, just include `<RoxMux.h>` to get started. All the libraries are templated to reduce RAM usage.
