@@ -116,7 +116,11 @@ public:
     if(pwmPin > -1){
       // reverse the brightness as the 595 requires a HIGH to disable outputs
       value = map(value, 0, 255, 255, 0);
+#if defined(ESP32)
+      digitalWrite(pwmPin, value>0);
+#else
       analogWrite(pwmPin, value);
+#endif
     }
   }
   void allOff(){
