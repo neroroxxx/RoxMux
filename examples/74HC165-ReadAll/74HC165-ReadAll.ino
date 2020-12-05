@@ -5,9 +5,9 @@
 #define MUX_TOTAL 1
 Rox74HC165 <MUX_TOTAL> mux;
 
-#define PIN_DATA  23 // pin 9 on 74HC165 (DATA)
+#define PIN_DATA  21 // pin 9 on 74HC165 (DATA)
 #define PIN_LOAD  22 // pin 1 on 74HC165 (LOAD)
-#define PIN_CLK   21 // pin 2 on 74HC165 (CLK))
+#define PIN_CLK   23 // pin 2 on 74HC165 (CLK))
 
 // keep track of the previous state of the pins
 // each element of the array holds the state of 8 pins, 1 per bit

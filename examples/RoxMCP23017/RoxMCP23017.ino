@@ -44,25 +44,25 @@ void setup(){
   // .update() is called
 
   // set the first 8 pins as output and connect leds with resistors
-  mux.pinMode(0, OUTPUT); // pin 0 = GPA0 of MCP2301X
-  mux.pinMode(1, OUTPUT); // pin 1 = GPA1 of MCP2301X
-  mux.pinMode(2, OUTPUT); // pin 2 = GPA2 of MCP2301X
-  mux.pinMode(3, OUTPUT); // pin 3 = GPA3 of MCP2301X
-  mux.pinMode(4, OUTPUT); // pin 4 = GPA4 of MCP2301X
-  mux.pinMode(5, OUTPUT); // pin 5 = GPA5 of MCP2301X
-  mux.pinMode(6, OUTPUT); // pin 6 = GPA6 of MCP2301X
-  mux.pinMode(7, OUTPUT); // pin 7 = GPA7 of MCP2301X
+  mux.pinMode(0, INPUT_PULLUP); // pin 0 = GPA0 of MCP2301X
+  mux.pinMode(1, INPUT_PULLUP); // pin 1 = GPA1 of MCP2301X
+  mux.pinMode(2, INPUT_PULLUP); // pin 2 = GPA2 of MCP2301X
+  mux.pinMode(3, INPUT_PULLUP); // pin 3 = GPA3 of MCP2301X
+  mux.pinMode(4, INPUT_PULLUP); // pin 4 = GPA4 of MCP2301X
+  mux.pinMode(5, INPUT_PULLUP); // pin 5 = GPA5 of MCP2301X
+  mux.pinMode(6, INPUT_PULLUP); // pin 6 = GPA6 of MCP2301X
+  mux.pinMode(7, INPUT_PULLUP); // pin 7 = GPA7 of MCP2301X
 
   // set the last 8 pins as inputs with the built in pullup resistor
   // wire a momentary button for each of these pins on one end the other to ground
-  mux.pinMode(8,  INPUT_PULLUP); // pin 8  = GPB0 of MCP2301X
-  mux.pinMode(9,  INPUT_PULLUP); // pin 9  = GPB1 of MCP2301X
-  mux.pinMode(10, INPUT_PULLUP); // pin 10 = GPB2 of MCP2301X
-  mux.pinMode(11, INPUT_PULLUP); // pin 11 = GPB3 of MCP2301X
-  mux.pinMode(12, INPUT_PULLUP); // pin 12 = GPB4 of MCP2301X
-  mux.pinMode(13, INPUT_PULLUP); // pin 13 = GPB5 of MCP2301X
-  mux.pinMode(14, INPUT_PULLUP); // pin 14 = GPB6 of MCP2301X
-  mux.pinMode(15, INPUT_PULLUP); // pin 15 = GPB7 of MCP2301X
+  mux.pinMode(8,  OUTPUT); // pin 8  = GPB0 of MCP2301X
+  mux.pinMode(9,  OUTPUT); // pin 9  = GPB1 of MCP2301X
+  mux.pinMode(10, OUTPUT); // pin 10 = GPB2 of MCP2301X
+  mux.pinMode(11, OUTPUT); // pin 11 = GPB3 of MCP2301X
+  mux.pinMode(12, OUTPUT); // pin 12 = GPB4 of MCP2301X
+  mux.pinMode(13, OUTPUT); // pin 13 = GPB5 of MCP2301X
+  mux.pinMode(14, OUTPUT); // pin 14 = GPB6 of MCP2301X
+  mux.pinMode(15, OUTPUT); // pin 15 = GPB7 of MCP2301X
 }
 void loop(){
   // update the mux readings
@@ -80,7 +80,7 @@ void loop(){
     // if you press the button connected to pin 9, the led in pin 1 will turn on
     // if you press the button connected to pin 10, the led in pin 2 will turn on
     // and so on
-    mux.digitalWrite(i, !mux.digitalRead(i+8));
+    mux.digitalWrite(i+8, !mux.digitalRead(i));
   }
 
 }
