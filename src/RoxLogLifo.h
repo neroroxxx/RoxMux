@@ -77,6 +77,10 @@ public:
     bufferLen = 0;
     head = 0;
   }
+  void triggerUpdate(){
+    // update flag to trigger an update
+    flags.on(ROX_LOG_LIFO_FLAG_UPDATE);
+  }
   unsigned long getBufferSize(){
     return sizeof(buffer);
   }
@@ -94,8 +98,8 @@ public:
       }
       uint16_t printCount = 0;
       if(bufferLen>=_maxLength){
-        for(uint16_t i = (head) ; i-- > 0 ; ){
-          if(i<t_startingAt && bufferLen>t_listLength){ continue; }
+        for(uint16_t i = (head), index=0  ; i-- > 0 ;  index++){
+          if(index<t_startingAt && bufferLen>t_listLength){ continue; }
           triggerCallback(buffer[i], printCount);
           printCount++;
           if(printCount>=t_listLength){
@@ -103,8 +107,8 @@ public:
           }
         }
         if(printCount < t_listLength){
-          for(uint16_t i = (bufferLen) ; i-- > 0 ; ){
-            if(i<t_startingAt && bufferLen>t_listLength){ continue; }
+          for(uint16_t i = (bufferLen), index=0 ; i-- > 0 ;  index++){
+            if(index<t_startingAt && bufferLen>t_listLength){ continue; }
             triggerCallback(buffer[i], printCount);
             printCount++;
             if(i==head || printCount>=t_listLength){
@@ -114,8 +118,8 @@ public:
         }
 
       } else {
-        for(uint16_t i = (bufferLen) ; i-- > 0 ; ){
-          if(i<t_startingAt && bufferLen>t_listLength){ continue; }
+        for(uint16_t i = (bufferLen), index=0 ; i-- > 0 ; index++){
+          if(index<t_startingAt && bufferLen>t_listLength){ continue; }
           triggerCallback(buffer[i], printCount);
           printCount++;
           if(printCount>=t_listLength){
