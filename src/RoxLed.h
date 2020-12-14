@@ -1,3 +1,11 @@
+/*
+  https://www.RoxXxtar.com/bmc
+  Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+  Utility to control Leds
+
+  Use at your own risk.
+*/
 #ifndef RoxLed_h
 #define RoxLed_h
 #include <Arduino.h>

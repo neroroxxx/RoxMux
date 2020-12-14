@@ -28,6 +28,7 @@
 #include "RoxTimer.h"
 #include "RoxIntervals.h"
 #include "RoxScroller.h"
+#include "RoxLogLifo.h"
 // muxes
 #include "Rox74HC40XX.h"
 #include "Rox74HC165.h"

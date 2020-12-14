@@ -46,7 +46,13 @@ Version 1.4.0 adds `RoxLatchingRelay` and `RoxNonLatchingRelay`, utility to blin
 - [RoxLatchingRelay](docs/RoxLatchingRelay.md) *(available as of version 1.4.0)*
 - [RoxNonLatchingRelay](docs/RoxNonLatchingRelay.md) *(available as of version 1.4.0)*
 
-Version 1.4.1 removes use of analogWrite when compiling for ESP32
+Version 1.4.1 removes use of analogWrite when compiling for ESP32.
+
+Version 1.4.2 adds `RoxLogLifo` a *Last In, First Out* circular buffer for logging messages.
+
+- [RoxLogLifo](docs/RoxLogLifo.md) *(available as of version 1.4.1)*
+
+
 
 See examples for code information.
 
