@@ -69,6 +69,7 @@ private:
   uint8_t pullupData[2] = {0, 0};
   uint8_t states[2] = {0, 0};
   RoxFlags <uint8_t> flags;
+  unsigned long lastTimeCheck = 0;
   void writeData(uint8_t t_reg, uint8_t t_value){
     Wire.beginTransmission(address);
     Wire.write((uint8_t) t_reg);
@@ -152,7 +153,10 @@ public:
       writePins(1);
     }
     // now we can read the MCP
-    readPins();
+    if((unsigned long)millis()-lastTimeCheck>=debounceTime){
+      readPins();
+      lastTimeCheck = millis();
+    }
   }
   void ledControl(uint8_t pin, RoxLed &t_led, uint16_t rate=75){
     uint8_t cmd = t_led.update(rate);

@@ -32,7 +32,7 @@ class RoxEncoder {
     }
     bool update(bool pinA, bool pinB, uint8_t debounceTime=1, bool activeState=LOW){
       flags.reset();
-      if((millis()-debounce) < debounceTime){
+      if((unsigned long)millis()-debounce < debounceTime){
         return false;
       }
       debounce = millis();
@@ -47,13 +47,12 @@ class RoxEncoder {
         if(now == 3){
           output = (newState >> 2) + (lastState>>1);
           newState = 0;
+          flags.on(ROX_ENCODER_FLAG_ACTIVITY);
+          flags.write(ROX_ENCODER_FLAG_INCREASED, (output>0));
+          lastState = now;
+          return true;
         }
         lastState = now;
-      }
-      if(output != 0){
-        flags.on(ROX_ENCODER_FLAG_ACTIVITY);
-        flags.write(ROX_ENCODER_FLAG_INCREASED, (output>0));
-        return true;
       }
       return false;
     }
