@@ -76,8 +76,8 @@ void loop(){
     // turn led on/off for 50ms at a time
     led.update(50);
   } else if(mode==ROX_PULSE){
-    // light up led every 500ms
-    led.update(500);
+    // light up led for 75ms then turn it off, only if the .on() method was called first
+    led.update(75);
   }
   // You can type anything in the serial monitor to toggle the led on/off
   // make sure you hit send and you specify the right baud rate in setup

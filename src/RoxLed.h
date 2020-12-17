@@ -18,6 +18,7 @@
 #define ROX_LED_FLAG_LED_STATE_CHANGED 2
 #define ROX_LED_FLAG_LED_STATE 3
 #define ROX_LED_FLAG_LED_BLINK_STATE 4
+#define ROX_LED_FLAG_LED_PULSE 5
 
 // ***************************************
 // ***************************************
@@ -93,6 +94,10 @@ public:
   void off(){
     setLedState(false);
   }
+  void pulse(){
+    setLedState(true);
+    flags.on(ROX_LED_FLAG_LED_PULSE);
+  }
   bool toggle(){
     bool state = !isOn();
     setLedState(state);
@@ -126,7 +131,11 @@ public:
       if(flags.read(ROX_LED_FLAG_LED_BLINK_STATE)){
         if(timeout >= 75){
           flags.write(ROX_LED_FLAG_LED_BLINK_STATE, false);
-          return pinControl(LOW) ? 1 : 0;
+          ret = pinControl(LOW) ? 1 : 0;
+          if(flags.toggleIfTrue(ROX_LED_FLAG_LED_PULSE)){
+            off();
+          }
+          return ret;
         }
       }
       if(timeout >= rate){

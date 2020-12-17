@@ -52,7 +52,7 @@ Version 1.4.2 adds `RoxLogLifo` a *Last In, First Out* circular buffer for loggi
 
 - [RoxLogLifo](docs/RoxLogLifo.md) *(available as of version 1.4.1)*
 
-
+Version 1.4.5 adds `.pulse()` method to `RoxLed`, it can be used instead of .on() if you only want to momentarily then turn off without continously pulsing it.
 
 See examples for code information.
 
