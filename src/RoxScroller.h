@@ -35,6 +35,12 @@ class RoxScroller {
     }
   public:
     RoxScroller(){}
+    T scroll(T &value, bool t_up, T amount, bool wrap, T min, T max){
+      if(t_up){
+        return up(value, amount, wrap, min, max);
+      }
+      return down(value, amount, wrap, min, max);
+    }
     T up(T &value, T amount, bool wrap, T min, T max){
       value = scroll(value, amount, wrap, min, max, true, false);
       return value;
