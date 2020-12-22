@@ -82,7 +82,7 @@ public:
     flags.on(ROX_LOG_LIFO_FLAG_UPDATE);
   }
   unsigned long getBufferSize(){
-    return sizeof(buffer);
+    return sizeof(buffer)/sizeof(T);
   }
   // update should be added to your sketch's loop function
   // @t_startingAt: where should the list start at.
