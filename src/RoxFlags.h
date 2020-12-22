@@ -48,5 +48,11 @@ class RoxFlags {
     void reset(){
       flags = 0;
     }
+    void set(T t_flags){
+      flags = t_flags;
+    }
+    T get(){
+      return flags;
+    }
 };
 #endif
