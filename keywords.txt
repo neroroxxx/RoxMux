@@ -22,6 +22,8 @@ RoxMicroEndless	KEYWORD1
 RoxScroller	KEYWORD1
 RoxLatchingRelay	KEYWORD1
 RoxNonLatchingRelay	KEYWORD1
+RoxMidiClock	KEYWORD1
+RoxMidiActiveSense	KEYWORD1
 
 
 begin	KEYWORD2
@@ -65,6 +67,22 @@ up	KEYWORD2
 down	KEYWORD2
 upAccurate	KEYWORD2
 downAccurate	KEYWORD2
+
+onMasterTickCallback	KEYWORD2
+onTempoChangeCallback	KEYWORD2
+onBeatCallback	KEYWORD2
+setMasterBpm	KEYWORD2
+getBpm	KEYWORD2
+tick	KEYWORD2
+tap	KEYWORD2
+onMasterTickCallback	KEYWORD2
+onStateChangeCallback	KEYWORD2
+isMaster	KEYWORD2
+isSlave	KEYWORD2
+setAsMaster	KEYWORD2
+setAsSlave	KEYWORD2
+toggleMode	KEYWORD2
+setMode	KEYWORD2
 
 ROX_DEBUG	LITERAL1
 ROX_PRINTLN	LITERAL1

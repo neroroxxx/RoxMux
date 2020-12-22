@@ -29,6 +29,9 @@
 #include "RoxIntervals.h"
 #include "RoxScroller.h"
 #include "RoxLogLifo.h"
+// for use with MIDI
+#include "RoxMidiClock.h"
+#include "RoxMidiActiveSense.h"
 // muxes
 #include "Rox74HC40XX.h"
 #include "Rox74HC165.h"

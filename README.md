@@ -54,6 +54,11 @@ Version 1.4.2 adds `RoxLogLifo` a *Last In, First Out* circular buffer for loggi
 
 Version 1.4.5 adds `.pulse()` method to `RoxLed`, it can be used instead of .on() if you only want to momentarily then turn off without continously pulsing it.
 
+Version 1.4.6 adds `RoxMidiClock` and `RoxMidiActiveSensing` for MIDI use, these both can be used with any MIDI Port like Serial/USB/USB HOST, they are simple tools that doesn't use interrupts so I recommend using this with fast boards like Teensy 3/4.
+
+- [RoxMidiClock](docs/RoxMidiClock.md) *(available as of version 1.4.6)*
+- [RoxMidiActiveSense](docs/RoxMidiClock.md) *(available as of version 1.4.6)*
+
 See examples for code information.
 
 RoxMux containes multiple libraries in one, just include `<RoxMux.h>` to get started. All the libraries are templated to reduce RAM usage.
