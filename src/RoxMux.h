@@ -22,8 +22,11 @@
 #define ROX_I2C_ERROR_NACK_DATA 3
 #define ROX_I2C_ERROR_OTHER     4
 
+#define ROX_STR_MATCH(str1,str2)((strcmp(str1,str2)==0))
+
 // utilities
 #include "RoxDebug.h"
+#include "RoxSerialMonitor.h"
 #include "RoxFlags.h"
 #include "RoxTimer.h"
 #include "RoxIntervals.h"
