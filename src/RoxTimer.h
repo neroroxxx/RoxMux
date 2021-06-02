@@ -112,12 +112,12 @@ public:
 
 
 // uses millis() for timing
-class RoxTimer : public RoxTimerBase <RoxTimingMillis, uint16_t> {};
+class RoxTimer : public RoxTimerBase <RoxTimingMillis, unsigned long> {};
 // uses micros() for timing
 class RoxMicroTimer : public RoxTimerBase <RoxTimingMicros, unsigned long> {};
 
 // uses millis() for timing
-class RoxEndlessTimer : public RoxEndlessTimerBase <RoxTimingMillis, uint16_t> {};
+class RoxEndlessTimer : public RoxEndlessTimerBase <RoxTimingMillis, unsigned long> {};
 // uses micros() for timing
 class RoxMicroEndless : public RoxEndlessTimerBase <RoxTimingMicros, unsigned long> {};
 
