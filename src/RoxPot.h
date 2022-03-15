@@ -25,12 +25,12 @@ class RoxPot {
     void begin(){
       debounce = millis();
     }
-    bool update(uint16_t reading, uint8_t debounceTime=1){
+    bool update(uint16_t reading, uint8_t debounceTime=1, uint16_t calMin=0, uint16_t calMax=1023){
       if((millis()-debounce) < debounceTime){
         return false;
       }
       debounceTime = millis();
-      reading = map(reading, 0, 1024, 0, 128);
+      reading = map(reading, calMin, (calMax+1), 0, 128);
       uint8_t lastValue = value;
       uint8_t lastRawValue = rawValue;
       rawValue = reading;
