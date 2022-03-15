@@ -32,6 +32,7 @@
 #include "RoxIntervals.h"
 #include "RoxScroller.h"
 #include "RoxLogLifo.h"
+#include "RoxLFO.h"
 // for use with MIDI
 #include "RoxMidiClock.h"
 #include "RoxMidiActiveSense.h"
