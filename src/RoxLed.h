@@ -54,7 +54,7 @@ private:
   }
   bool pinControl(bool state){
     if(pin >= 0){
-      digitalWrite(pin, state);
+      digitalWrite(pin, state?HIGH:LOW);
     }
     return isOn();
   }
@@ -154,5 +154,4 @@ public:
     return ret;
   }
 };
-
 #endif

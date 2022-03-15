@@ -16,6 +16,7 @@
 //                RoxRelay
 // ***************************************
 // ***************************************
+// @holdTime: how long the relay must remain on for
 template <uint16_t holdTime, bool activeState>
 class RoxNonLatchingRelay {
 private:

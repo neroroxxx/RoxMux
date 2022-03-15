@@ -103,6 +103,29 @@ class Rox74HC165 {
     }
 };
 
+template <uint8_t c> class Rox16Bit74HC165 : public Rox74HC165 <c*2> {
+  public:
+  uint16_t read(uint8_t n){
+    return (read(n) | (read(n+1)<<8));
+  }
+  bool readPin(uint8_t t_mux, uint8_t t_bit){
+    uint8_t t = (constrain(t_bit, 0, 15)/8);
+    return readPin(t_mux+t, t_bit-(t*8));
+  }
+};
+template <uint8_t c> class Rox32Bit74HC165 : public Rox74HC165 <c*4> {
+  public:
+  uint32_t read(uint8_t n){
+    return (read(n) | (read(n+1)<<8) | (read(n+2)<<16) | (read(n+3)<<24));
+  }
+  bool readPin(uint8_t t_mux, uint8_t t_bit){
+    uint8_t t = (constrain(t_bit, 0, 31)/8);
+    return readPin(t_mux+t, t_bit-(t*8));
+  }
+};
+template <uint8_t c> class RoxDual74HC165 : public Rox16Bit74HC165 <c> {};
+template <uint8_t c> class RoxQuad74HC165 : public Rox32Bit74HC165 <c> {};
+/*
 template <uint8_t _muxCount>
 class RoxDual74HC165 {
 private:
@@ -135,5 +158,5 @@ public:
     return mux.readPins(t_mux) | (mux.readPins(t_mux+1)<<8);
   }
 };
-
+*/
 #endif
