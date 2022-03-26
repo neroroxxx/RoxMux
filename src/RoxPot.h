@@ -13,41 +13,66 @@
 
 class RoxPot {
   private:
-    RoxFlags <uint8_t> flags;
-    uint8_t value = 0;
-    uint8_t rawValue = 0;
-    uint8_t counter = 0;
-    unsigned long debounce = 0;
+    int16_t lastValue = 0;
+    unsigned long lockout = 0;
+    uint16_t resolution = 1023;
+    uint8_t precision = 0;
   public:
     RoxPot(){
 
     }
-    void begin(){
-      debounce = millis();
+    void begin(int16_t initialValue=0, uint8_t _resolution=7, uint8_t t_precision=2){
+      reset(initialValue);
+      precision = t_precision;
+      // set how many bits to return
+      // higher bit count may show random readings while the potentiometer
+      // is static, this is due to noise.
+      // lower bit count will generate a more stable reading but lowers the
+      // maximum reading value.
+      switch(_resolution){
+        case 10: resolution = 1023; break;
+        case 9:  resolution = 511; break;
+        case 8:  resolution = 255; break;
+        case 7:  resolution = 127; break;
+        default: resolution = 1023; break;
+      }
     }
-    bool update(uint16_t reading, uint8_t debounceTime=1, uint16_t calMin=0, uint16_t calMax=1023){
-      if((millis()-debounce) < debounceTime){
+    bool update(uint16_t reading, uint8_t lockoutHold=1, uint16_t calMin=0, uint16_t calMax=1023){
+      if((millis()-lockout) < lockoutHold){
         return false;
       }
-      debounceTime = millis();
-      reading = map(reading, calMin, (calMax+1), 0, 128);
-      uint8_t lastValue = value;
-      uint8_t lastRawValue = rawValue;
-      rawValue = reading;
-      if(rawValue != lastRawValue){
-        counter = 0;
+      calMax = calMax > resolution ? resolution : calMax;
+      if(resolution<1023){
+        // if the resolution is lower than 10 bits we have to map the current
+        // reading from the typical 10-bit resolution to the new resolution
+        // before mapping for the calibration values
+        reading = map(reading, 0, 1023, 0, resolution);
       }
-      value = floor((value + (rawValue*counter)) / (counter+1));
-      value = (abs(rawValue - value) > 10) ? ((value + rawValue)/2) : value;
-      counter++;
-      if(counter >= 255){
-        counter = 0;
+      reading = map(reading, calMin, calMax, 0, resolution);
+
+      if(lastValue!=reading){
+        if(
+          (reading > (lastValue+precision) || reading < (lastValue-precision))
+          ||
+          ((lastValue!=calMin && reading==calMin) || (lastValue!=calMax && reading==calMax))
+        ){
+          lastValue = reading;
+          lockoutHold = millis();
+          return true;
+        }
       }
-      return (lastValue != value);
+      lockoutHold = millis();
+      return false;
     }
-    uint8_t read(){
-      return value;
+
+    uint16_t read(){
+      return lastValue;
+    }
+    void reset(int16_t t_value=0){
+      lastValue = t_value;
+      lockout = millis();
     }
 };
+
 
 #endif
