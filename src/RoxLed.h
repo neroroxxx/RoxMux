@@ -107,11 +107,11 @@ public:
     return update(60000/beatsPerMinute);
   }
   uint8_t update(uint16_t rate=75){
-    bool ret = false;
+    bool ret = 0;
     // led is off
     if(!isOn()){
       if(stateChanged()){
-        return pinControl(LOW) ? 1 : 0;
+        return pinControl(LOW) ? 2 : 1;
       }
       return 0;
     }
@@ -131,7 +131,7 @@ public:
       if(flags.read(ROX_LED_FLAG_LED_BLINK_STATE)){
         if(timeout >= 75){
           flags.write(ROX_LED_FLAG_LED_BLINK_STATE, false);
-          ret = pinControl(LOW) ? 1 : 0;
+          ret = pinControl(LOW) ? 2 : 1;
           if(flags.toggleIfTrue(ROX_LED_FLAG_LED_PULSE)){
             off();
           }
@@ -142,7 +142,7 @@ public:
         flags.write(ROX_LED_FLAG_LED_BLINK_STATE, true);
         ret = pinControl(HIGH);
         prevTime = millis();
-        return ret ? 2 : 0;
+        return ret ? 2 : 1;
       }
     } else {
       // neither pulse nor blink mode are enabled so the led just turns on/off
