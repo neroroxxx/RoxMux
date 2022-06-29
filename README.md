@@ -9,6 +9,17 @@ RoxMux is a Collection of Multiplexer Controllers for some commonly used multipl
 ## Support RoxMux Development
 To support RoxMux Development you can can buy products from the BMC Shop @ [BadassMIDI.com](http://www.badassmidi.com)
 
+#### MUXIN-16, Dual 74HC165 for 16 Digital Inputs from one board!
+[![MUXIN-16](images/muxin-16-dual-74hc165-shift-register-multiplexer.jpeg)](https://www.roxxxtar.com/bmc-shop)
+
+#### ANAMUX, Dual 74HC4067 for 32 Analog Inputs from one board!
+[![ANAMUX](images/anamux-dual-74hc4067-analog-multiplexer.jpg)](https://www.roxxxtar.com/bmc-shop)
+
+#### MIDI CHIP, MIDI I/O in a tiny board!
+[![MIDI CHIP](images/midi-chip-all-in-one-midi-io-board.jpg)](https://www.roxxxtar.com/bmc-shop)
+
+
+
 RoxMux includes support for:
 
 - [74HC165](docs/74HC165.md)
