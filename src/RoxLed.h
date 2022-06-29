@@ -107,7 +107,7 @@ public:
     return update(60000/beatsPerMinute);
   }
   uint8_t update(uint16_t rate=75){
-    bool ret = 0;
+    uint8_t ret = 0;
     // led is off
     if(!isOn()){
       if(stateChanged()){

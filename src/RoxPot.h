@@ -13,7 +13,7 @@
 
 class RoxPot {
   private:
-    int16_t lastValue = 0;
+    uint16_t lastValue = 0;
     unsigned long lockout = 0;
     uint16_t resolution = 1023;
     uint8_t precision = 0;
@@ -68,7 +68,7 @@ class RoxPot {
     uint16_t read(){
       return lastValue;
     }
-    void reset(int16_t t_value=0){
+    void reset(uint16_t t_value=0){
       lastValue = t_value;
       lockout = millis();
     }

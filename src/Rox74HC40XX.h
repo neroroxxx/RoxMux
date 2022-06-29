@@ -50,6 +50,9 @@ class Rox74HC40XX {
       delay(10);
       timeout = millis();
     }
+    uint16_t getLength(){
+      return _muxCount*_muxPins;
+    }
     // @n: the index of the mux
     // @pin: the pin on the teensy connected to that mux' signal pin
     // this method must be called for each mux
@@ -64,14 +67,18 @@ class Rox74HC40XX {
     // since we don't want to use an actual delay() we use an elapsedMillis
     // you can pass a value to this function in your sketch to change the
     // number of milliseconds between each pin read.
-    void update(uint8_t readInterval=1){
+    bool update(uint8_t readInterval=1){
       if(millis()-timeout >= readInterval){
         readMux();
         timeout = millis();
+        // return true when the mux has been read
+        // used for testing and to know when the mux has been read
+        return true;
       }
+      return false;
     }
     uint16_t read(uint16_t n){
-      if(n < totalPins){
+      if(n < (_muxCount * totalPins)){
         return values[n];
       }
       return 0;
@@ -108,6 +115,9 @@ class Rox74HC4067 : public Rox74HC40XX <_muxCount, 4, 16> {};
 
 template <uint8_t _muxCount>
 class Rox74HC4051 : public Rox74HC40XX <_muxCount, 3, 8> {};
+
+template <uint8_t _muxCount>
+class RoxANAMUX : public Rox74HC40XX <(_muxCount*2), 4, 16> {};
 
 
 #endif

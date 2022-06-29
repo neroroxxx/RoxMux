@@ -47,9 +47,8 @@ public:
     pinMode(pin, OUTPUT);
     // set pin to initial state
     digitalWrite(pin, defaultToSet ? polarityHigh() : polarityLow());
-    if(defaultToSet>=0){
+    if(defaultToSet){
       flags.write(ROX_NL_RELAY_STATE, defaultToSet);
-
       flags.on(ROX_NL_RELAY_STATE_CHANGED);
     }
     prevTime = millis();

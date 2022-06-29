@@ -42,11 +42,12 @@ class Rox74HC165 {
       digitalWrite(loadPin, HIGH);
       memset(states, 0, _muxCount);
     }
+    uint16_t getLength(){
+      return _muxCount*8;
+    }
     void update(){
       digitalWrite(loadPin, LOW);
-#if ROXMUX_74HC165_DELAY > 0
       delayMicroseconds(ROXMUX_74HC165_DELAY);
-#endif
       digitalWrite(loadPin, HIGH);
       for(uint8_t mux = 0; mux < _muxCount; mux++){
         for(int i = 7; i >= 0; i--){
@@ -54,13 +55,23 @@ class Rox74HC165 {
           bitWrite(states[mux], i, bit);
           digitalWrite(clkPin, HIGH);
 
-#if ROXMUX_74HC165_DELAY > 0
           delayMicroseconds(ROXMUX_74HC165_DELAY);
-#endif
+
           digitalWrite(clkPin, LOW);
         }
       }
     }
+    // return FALSE/LOW if bit is set (pin is grounded)
+    bool read(uint16_t n){
+      if(n >= (_muxCount*8)){
+        return HIGH;
+      }
+      return bitRead(states[(n>>3)], (n&0x07));
+    }
+    bool readPin(uint16_t n){
+      return read(n);
+    }
+    /*
     uint8_t read(uint8_t n){
       n = constrain(n, 0, _muxCount-1);
       return states[n];
@@ -87,9 +98,7 @@ class Rox74HC165 {
       }
       return x;
     }
-    bool readPin(uint16_t n){
-      return readPin((n>>3), (n&0x07));
-    }
+
     // return true if the pin is active
     bool readPin(uint8_t t_mux, uint8_t t_bit){
       t_mux = constrain(t_mux, 0, (_muxCount-1));
@@ -101,62 +110,11 @@ class Rox74HC165 {
       t_mux = constrain(t_mux, 0, (_muxCount-1));
       return states[t_mux];
     }
+    */
 };
 
-template <uint8_t c> class Rox16Bit74HC165 : public Rox74HC165 <c*2> {
-  public:
-  uint16_t read(uint8_t n){
-    return (read(n) | (read(n+1)<<8));
-  }
-  bool readPin(uint8_t t_mux, uint8_t t_bit){
-    uint8_t t = (constrain(t_bit, 0, 15)/8);
-    return readPin(t_mux+t, t_bit-(t*8));
-  }
-};
-template <uint8_t c> class Rox32Bit74HC165 : public Rox74HC165 <c*4> {
-  public:
-  uint32_t read(uint8_t n){
-    return (read(n) | (read(n+1)<<8) | (read(n+2)<<16) | (read(n+3)<<24));
-  }
-  bool readPin(uint8_t t_mux, uint8_t t_bit){
-    uint8_t t = (constrain(t_bit, 0, 31)/8);
-    return readPin(t_mux+t, t_bit-(t*8));
-  }
-};
-template <uint8_t c> class RoxDual74HC165 : public Rox16Bit74HC165 <c> {};
-template <uint8_t c> class RoxQuad74HC165 : public Rox32Bit74HC165 <c> {};
-/*
-template <uint8_t _muxCount>
-class RoxDual74HC165 {
-private:
-  Rox74HC165 <(_muxCount*2)> mux;
-public:
-  RoxDual74HC165(){}
-  void begin(uint8_t t_data, uint8_t t_load, uint8_t t_clk){
-    mux.begin(t_data, t_load, t_clk);
-  }
-  void update(){
-    mux.update();
-  }
-  // return true if the pin is active
-  bool readPin(uint8_t t_mux=0, uint8_t t_bit=0){
-    t_mux = constrain(t_mux, 0, (_muxCount-1));
-    t_bit = constrain(t_bit, 0, 15);
-    if(t_bit>=8){
-      t_mux++;
-      t_bit -= 8;
-    }
-    if(t_mux>=(_muxCount*2)){
-      return false;
-    }
-    return mux.readPin(t_mux, t_bit);
-  }
-  uint16_t readPins(uint16_t t_mux){
-    if((t_mux+1)>=(_muxCount*2)){
-      return 0;
-    }
-    return mux.readPins(t_mux) | (mux.readPins(t_mux+1)<<8);
-  }
-};
-*/
+template <uint8_t _muxinCount>
+class RoxMUXIN16 : public Rox74HC165 <_muxinCount*2>{};
+
+
 #endif

@@ -16,7 +16,7 @@
 #define ROX_BTN_STATE_DBL_TRIGGERED   5
 #define ROX_BTN_STATE_DBL_IGNORE_REL  6
 
-#define ROX_BTN_DEFAULT_HOLD_THRESH   500
+#define ROX_BTN_HOLD_THRESH   500
 
 #define ROX_NONE      0
 #define ROX_RELEASED  1
@@ -31,6 +31,10 @@ class RoxButton {
     unsigned long dblDebounce = 0;
     uint16_t doublePressTime = 0;
     RoxFlags <uint8_t> flags;
+    void (*onUpdateCallback)(uint8_t type);
+    void onUpdate(void (*fptr)(uint8_t type)){
+      onUpdateCallback = fptr;
+    }
     bool isPressed(){
       return flags.read(ROX_BTN_STATE);
     }
@@ -63,6 +67,7 @@ class RoxButton {
     }
   public:
     RoxButton(){
+      onUpdateCallback = 0;
       debounce = 0;
       holdDebounce = 0;
       flags.reset();
@@ -70,31 +75,55 @@ class RoxButton {
     void begin(){
       debounce = millis();
     }
-    bool update(bool state, uint16_t debounceTime=50, bool activeState=LOW){
+    bool update(bool state, uint16_t t_debounce=50, bool t_logic=LOW){
       flags.off(ROX_BTN_STATE_CHANGED);
-      bool pressed = (activeState==LOW) ? !state : state;
-      if(((unsigned long)millis() - debounce) >= debounceTime){
+      bool pressed = (t_logic==LOW) ? !state : state;
+      if(((unsigned long)millis() - debounce) >= t_debounce){
         debounce = millis();
         if(pressed != flags.read(ROX_BTN_STATE)){
+
+          holdDebounce = millis();
           flags.write(ROX_BTN_STATE, pressed);
           flags.write(ROX_BTN_STATE_CHANGED, true);
           flags.write(ROX_BTN_STATE_HELD, pressed);
-          holdDebounce = millis();
+
+          if(onUpdateCallback){
+            // use updateWithCallback to also set a hold time, otherwise the
+            // default hold time 500ms is used
+            read(ROX_BTN_HOLD_THRESH);
+          }
           return true;
         }
       }
       return false;
     }
-    uint8_t read(uint16_t holdTime=ROX_BTN_DEFAULT_HOLD_THRESH){
+    void updateWithCallback(bool state, uint16_t t_debounce=50, bool t_logic=LOW, uint16_t t_hold=ROX_BTN_HOLD_THRESH, bool ignoreAfterHold=false){
+      if(update(state, t_debounce, t_logic) && onUpdateCallback){
+        read(t_hold, ignoreAfterHold);
+      }
+    }
+    uint8_t read(uint16_t t_hold=ROX_BTN_HOLD_THRESH, bool ignoreAfterHold=false){
       if(stateChanged()){
-        if(held(holdTime)){
+        if(held(t_hold)){
+          if(onUpdateCallback){
+            onUpdateCallback(ROX_HELD);
+          }
           return ROX_HELD;
         } else {
           if(doublePressed()){
+            if(onUpdateCallback){
+              onUpdateCallback(ROX_DOUBLE);
+            }
             return ROX_DOUBLE;
           } else if(isPressed()){
+            if(onUpdateCallback){
+              onUpdateCallback(ROX_PRESSED);
+            }
             return ROX_PRESSED;
-          } else {
+          } else if(released(ignoreAfterHold)){
+            if(onUpdateCallback){
+              onUpdateCallback(ROX_RELEASED);
+            }
             return ROX_RELEASED;
           }
         }
@@ -142,7 +171,7 @@ class RoxButton {
       }
       return state;
     }
-    bool held(uint16_t holdTime=ROX_BTN_DEFAULT_HOLD_THRESH){
+    bool held(uint16_t holdTime=ROX_BTN_HOLD_THRESH){
       bool state = isPressed() && btnHeld() && ((unsigned long)(millis()-holdDebounce)>=holdTime);
       if(state && !flags.read(ROX_BTN_STATE_HOLD_TRIGGERED)){
         flags.on(ROX_BTN_STATE_HOLD_TRIGGERED);

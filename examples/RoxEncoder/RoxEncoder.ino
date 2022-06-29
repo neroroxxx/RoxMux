@@ -29,6 +29,14 @@ void setup(){
   delay(100);
   // the .begin() method starts the debouncing timer
   encoder.begin();
+  // tick sensitivity
+  // this value should not exceed 3 or be less than 1
+  // this value determines the number of ticks returned based on how fast
+  // you rotate the encoder, the RoxEncoder.h for source code and how the values
+  // will change.
+  // a lower value is better for encoders without detents and depending on
+  // how high a value you will be changing with the encoder
+  encoder.setTickSensitivity(2);
 }
 
 void loop(){
@@ -61,13 +69,18 @@ void loop(){
   if(encoder.read()){
     // encoder has been rotated
     Serial.print("Encoder rotated ");
-    // .increased() tells us if the encoder was rotated clockwise
+    // .clockwise() tells us if the encoder was rotated clockwise
     // you can also use .clockwise()
     // if this method returns false the encoder was rotated counter-clockwise
-    if(encoder.increased()){
-      Serial.println("Clockwise");
+    // encoder.getTicks() gives the number of calculated ticks, if you rotate
+    // slowly it will return 1 the faster you rotate the higher the value.
+    // encoder.getTicks() ranges from 1 to 9 depending on the sensitivity
+    if(encoder.clockwise()){
+      Serial.print("Clockwise ");
     } else {
-      Serial.println("Counter-Clockwise");
+      Serial.print("Counter-Clockwise ");
     }
+    Serial.print(encoder.getTicks());
+    Serial.print(" ticks");
   }
 }

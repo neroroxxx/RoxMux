@@ -8,7 +8,7 @@
 #ifndef RoxTCA9548A_h
 #define RoxTCA9548A_h
 
-#include "Wire.h"
+#include <Wire.h>
 
 // pin mode
 #define ROX_TCA9548A_DEFAULT_ADDR 0x70

@@ -43,9 +43,9 @@
 #ifndef RoxMCP2301X_h
 #define RoxMCP2301X_h
 
+#include <Wire.h>
 #include "RoxFlags.h"
 #include "RoxLed.h"
-#include "Wire.h"
 
 // pin mode
 #define ROX_MCP2301X_IO_MODE 0x00

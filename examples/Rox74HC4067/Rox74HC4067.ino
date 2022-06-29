@@ -1,6 +1,6 @@
 /*
   https://www.RoxXxtar.com/bmc
-  Example to read one 74HC4067
+  Example to read 2 74HC4067
   The Rox74HC40XX has 3 classes, a base Rox74HC40XX and 2 children:
 
   Rox74HC4067, this is a 16 pin analog-in multiplexer
@@ -11,21 +11,16 @@
 
 // MUX_TOTAL is the number of 74HC4067s that you have chained together
 // if you have more than 1 then change it to that number.
-#define MUX_TOTAL 1
+#define MUX_TOTAL 2
 Rox74HC4067 <MUX_TOTAL> mux;
 
-#define PIN_SIG  23
-#define PIN_CH0  22
-#define PIN_CH1  21
-#define PIN_CH2  20
-#define PIN_CH3  19
 
-// pins used during development
-// #define PIN_SIG  23
-// #define PIN_CH0  31
-// #define PIN_CH1  30
-// #define PIN_CH2  22
-// #define PIN_CH3  21
+#define PIN_S0  23
+#define PIN_S1  22
+#define PIN_S2  21
+#define PIN_S3  20
+#define PIN_SIG0  19
+#define PIN_SIG1  18
 
 // this is the pin of the 74HC4067 that we will read
 #define PIN_TO_READ 0
@@ -39,10 +34,12 @@ void setup(){
   delay(100);
   Serial.begin(115200);
   // being the mux
-  mux.begin(PIN_CH0, PIN_CH1, PIN_CH2, PIN_CH3);
+  mux.begin(PIN_S0, PIN_S1, PIN_S2, PIN_S3);
   // set what pin is the signal pin for the first mux
   // the first argument is the index of the mux, second is the pin number
-  mux.setSignalPin(0, PIN_SIG);
+  mux.setSignalPin(0, PIN_SIG0);
+  // second mux signal pin
+  mux.setSignalPin(1, PIN_SIG1);
 }
 
 void loop(){
@@ -53,7 +50,7 @@ void loop(){
   // every 1 millisecond
   mux.update();
   // read each pin
-  for(uint8_t i=0,n=MUX_TOTAL*16;i<n;i++){
+  for(uint8_t i=0,n=mux.getLength();i<n;i++){
     // since the Rox74HC4067 doesn't smooth the values it just reads them raw
     // we'll only read one pin on this example
     if(i==PIN_TO_READ){

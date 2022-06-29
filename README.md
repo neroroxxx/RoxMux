@@ -6,6 +6,9 @@
 
 RoxMux is a Collection of Multiplexer Controllers for some commonly used multiplexer chips. Compatible with Teensy and most Arduino boards.
 
+## Support RoxMux Development
+To support RoxMux Development you can can buy products from the BMC Shop @ [BadassMIDI.com](http://www.badassmidi.com)
+
 RoxMux includes support for:
 
 - [74HC165](docs/74HC165.md)

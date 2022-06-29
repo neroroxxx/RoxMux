@@ -80,8 +80,7 @@ void loop(){
 
   } else if(button.released(true)){
     // you can pass a boolean (true or false) to the .released() method
-    // this boolean will determine if the release should be triggered after
-    // a held() has been triggered.
+    // true if you want to ignore the "released" reading after "held" was triggered
     Serial.println("- Button has been released");
   }
   // if you only want to know if the button was held then

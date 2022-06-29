@@ -45,6 +45,7 @@
 // hardware handlers
 #include "RoxButton.h"
 #include "RoxEncoder.h"
+#include "RoxEncoderWithButton.h"
 #include "RoxPot.h"
 #include "RoxLed.h"
 #include "RoxLedMeter.h"
