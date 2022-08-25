@@ -15,17 +15,19 @@
 RoxEncoderWithButton <50, LOW, 2, LOW> encoder;
 
 void setup(){
-  // this example uses pins 0 and 1 on the encoder and pin 2 on the switch
-  // also uses the built-in pullup resistor of the pins
-  pinMode(0, INPUT_PULLUP);
-  pinMode(1, INPUT_PULLUP);
-  pinMode(2, INPUT_PULLUP);
   // start the serial monitor and print a line
   Serial.begin(115200);
   // little delay before starting
   delay(100);
   Serial.println("RoxEncoderWithButton Example");
   // always add the .begin() method on the setup();
+  
+  // this example uses pins 0 and 1 on the encoder and pin 2 on the switch
+  // also uses the built-in pullup resistor of the pins
+  pinMode(0, INPUT_PULLUP);
+  pinMode(1, INPUT_PULLUP);
+  pinMode(2, INPUT_PULLUP);
+
   encoder.begin(onUpdate);
 }
 void loop(){

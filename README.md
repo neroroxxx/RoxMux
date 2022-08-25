@@ -15,6 +15,9 @@ To support RoxMux Development you can can buy products from the BMC Shop @ [Bada
 #### ANAMUX, Dual 74HC4067 for 32 Analog Inputs from one board!
 [![ANAMUX](images/anamux-dual-74hc4067-analog-multiplexer.jpg)](https://www.roxxxtar.com/bmc-shop)
 
+#### OCTOSWITCH, 8 Button board with a 74HC165 on board!
+[![OCTOSWITCH](images/octoswitch.jpg)](https://www.roxxxtar.com/bmc-shop)
+
 #### MIDI CHIP, MIDI I/O in a tiny board!
 [![MIDI CHIP](images/midi-chip-all-in-one-midi-io-board.jpg)](https://www.roxxxtar.com/bmc-shop)
 

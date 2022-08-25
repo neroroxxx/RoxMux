@@ -52,4 +52,6 @@
 #include "RoxLatchingRelay.h"
 #include "RoxNonLatchingRelay.h"
 
+#include "RoxOctoswitch.h"
+
 #endif

@@ -12,7 +12,7 @@ public:
   RoxSerialMonitor(){
 
   }
-  void begin(uint16_t t_baud=0){
+  void begin(uint32_t t_baud=0){
     if(t_baud==0){
       return;
     }
