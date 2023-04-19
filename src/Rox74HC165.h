@@ -39,7 +39,7 @@ class Rox74HC165 {
       pinMode(dataPin, INPUT);
       digitalWrite(clkPin, LOW);
       digitalWrite(loadPin, HIGH);
-      memset(states, 0, _muxCount);
+      memset(states, 0, sizeof(states[0])*_muxCount);
     }
     uint16_t getLength(){
       return _muxCount*8;

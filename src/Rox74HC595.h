@@ -70,7 +70,7 @@ private:
 public:
   Rox74HC595(){
     flags.reset();
-    memset(states, 0, _muxCount);
+    memset(states, 0, sizeof(states[0])*_muxCount);
   }
   void begin(uint8_t t_data, uint8_t t_latch, uint8_t t_clk,
     int8_t t_pwm = -1){

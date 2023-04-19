@@ -28,7 +28,7 @@ class RoxOctoswitch {
   public:
     RoxOctoswitch(){
       onUpdateCallback = 0;
-      memset(ignoreAfterHold, 0, _octoCount);
+      memset(ignoreAfterHold, 0, sizeof(ignoreAfterHold[0])*_octoCount);
     }
     void begin(uint8_t t_pinData, uint8_t t_pinLoad, uint8_t t_pinClk){
       mux.begin(t_pinData, t_pinLoad, t_pinClk);

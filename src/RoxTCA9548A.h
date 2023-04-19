@@ -30,7 +30,7 @@ private:
   }
 public:
   RoxTCA9548A(){
-    memset(muxAddress, ROX_TCA9548A_DEFAULT_ADDR, muxCount);
+    memset(muxAddress, ROX_TCA9548A_DEFAULT_ADDR, sizeof(muxAddress[0])*muxCount);
   }
   void begin(bool fast=false){
     Wire.begin();
