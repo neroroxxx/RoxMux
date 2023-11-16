@@ -58,6 +58,10 @@ void loop(){
   //    if it's a pulldown resistor then the active state is HIGH.
   button.update(digitalRead(0), 50, LOW);
 
+  // if you want your button to have dual functionality like one for press and one
+  // for hold, you will have to use held() and released() not pressed()
+  // otherwise the button will always read the pressed() method.
+
   // the .held() function can take the time in milliseconds that you want to hold
   // the button for, if no value is passed the default 500ms will be used
   if(button.held()){
