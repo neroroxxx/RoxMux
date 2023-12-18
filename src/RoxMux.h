@@ -48,6 +48,7 @@
 #include "RoxEncoderWithButton.h"
 #include "RoxPot.h"
 #include "RoxLed.h"
+#include "RoxFadingLed.h"
 #include "RoxLedMeter.h"
 #include "RoxLatchingRelay.h"
 #include "RoxNonLatchingRelay.h"

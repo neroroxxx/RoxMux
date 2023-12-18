@@ -37,6 +37,7 @@ In Addition as of Version 1.1.3 RoxMux introduces utilities to debounce buttons,
 - [RoxLed](docs/RoxLed.md) *(utility to control/blink/pulse leds, in RoxMux v1.3.0)*
 - [RoxLatchingRelay](docs/RoxLatchingRelay.md) *(utility to control latching relays, in RoxMux v1.4.0)*
 - [RoxNonLatchingRelay](docs/RoxNonLatchingRelay.md) *(utility to control non-latching relays, in RoxMux v1.4.0)*
+- [RoxFadingLed](docs/RoxFadingLed.md) *(utility to fade an led, in RoxMux v1.7.0)*
 
 Version 1.1.5 adds RoxLedMeter, a tool to create a VU Meter with Leds.
 
