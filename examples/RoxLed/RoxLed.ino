@@ -48,6 +48,17 @@ void setup(){
 
   prevTime = millis();
 
+
+  // Polarity, you can reverse the polarity of the pin
+  // false: sets led pin HIGH when calling .on() and LOW with .off()
+  // true:  sets led pin LOW when calling .on() and HIGH with .off()
+  // changing the polarity automatically turns the led off
+  // use it in the setup function.
+  led.reversePolarity(true);
+
+  // you can get the current polarity value
+  // led.getPolarity();
+
   // turn the led on
   led.on();
 }
