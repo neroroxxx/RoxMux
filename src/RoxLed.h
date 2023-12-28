@@ -70,11 +70,12 @@ public:
   RoxLed(){
 
   }
-  void begin(int16_t t_pin=-1){
+  void begin(int16_t t_pin=-1, bool reversed=false){
     if(t_pin >= 0){
       pin = t_pin;
+      flags.write(ROX_LED_FLAG_REVERSED, reversed);
       pinMode(pin, OUTPUT);
-      digitalWrite(pin, LOW);
+      digitalWrite(pin, reversed?HIGH:LOW);
     }
     prevTime = millis();
   }
@@ -93,7 +94,13 @@ public:
   void reversePolarity(bool t_value){
     if(t_value != flags.read(ROX_LED_FLAG_REVERSED)){
       flags.write(ROX_LED_FLAG_REVERSED, t_value);
-      off();
+      if(isOn()){
+        off();
+        on();
+      } else {
+        on();
+        off();
+      }
     }
   }
   bool getPolarity(){
