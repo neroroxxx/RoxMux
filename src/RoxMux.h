@@ -7,6 +7,11 @@
 
 #include <Arduino.h>
 
+#define ROX_VERSION_MAJ     1
+#define ROX_VERSION_MIN     7
+#define ROX_VERSION_PATCH   3
+#define ROX_VERSION_STR     "1.7.3"
+
 //RoxLatchingRelay and RoxNonLatchingRelay
 #define ROX_RESET 0
 #define ROX_SET 1
