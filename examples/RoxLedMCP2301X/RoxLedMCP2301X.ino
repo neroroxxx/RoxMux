@@ -6,9 +6,16 @@
   You can use RoxLed to directly control a pin or within Rox74HC595 and RoxMCP2301X
 */
 #include <RoxMux.h>
+#include <Wire.h>
 
-
+// class is templated you can specify the chip's address as the template argument
+// in this case it's 0x20 for the chip's address
 RoxMCP23017 <0x20> mux;
+
+// to specify the use of Wire, Wire1 or Wire2 you can use this line below, 
+// note you'll be using the RoxMCP2301X class which is the base of RoxMCP23017
+// all functions are the same.
+// RoxMCP2301X <0x20> mux(&Wire1);
 
 // for this example we'll use the built-in led on pin 13
 RoxLed led;
@@ -86,7 +93,7 @@ void loop(){
   // 1 - the led has been turned off (only returned once when the state changes)
   // 2 - the led has been turned on (only returned once when the state changes)
 
-  // for this example tho we'll change between modes every 2 seconds
+  // for this example we'll change between modes every 2 seconds
   if((unsigned long) millis()-prevTime >= 5000){
     if(mode>=2){
       mode = 0;
