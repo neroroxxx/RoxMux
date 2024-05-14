@@ -50,8 +50,8 @@ public:
     prevTime = micros();
   }
   void setBPM(uint16_t t_value){
-    rate = constrain(t_value, 30, 300);
-    rate = (0x3938700 / rate) / 32;
+    rate = constrain((int16_t)t_value, 30, 300);
+    rate = (uint16_t)((0x3938700 / rate) / 32);
   }
   bool isOn(){
     return flags.read(ROX_FADING_LED_FLAG_STATE);
