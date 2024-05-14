@@ -64,12 +64,14 @@
 
 template <uint8_t address>
 class RoxMCP2301X {
+  
 private:
-  TwoWire * _Wire;
+  TwoWire* _Wire;
+  RoxFlags <uint8_t> flags;
+
   uint8_t ioData[2] = {0, 0};
   uint8_t pullupData[2] = {0, 0};
-  uint8_t states[2] = {0, 0};
-  RoxFlags <uint8_t> flags;
+  uint8_t states[2] = {0, 0};  
   unsigned long lastTimeCheck = 0;
   
   void writeData(uint8_t t_reg, uint8_t t_value){
@@ -113,9 +115,10 @@ private:
   }
 
 public:
+  
   RoxMCP2301X(TwoWire *_wire = &Wire){
-    flags.reset();
     _Wire = _wire;
+    flags.reset();
   }
   void begin(bool fast=false){
     _Wire->begin();
