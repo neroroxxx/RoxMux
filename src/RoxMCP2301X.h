@@ -65,34 +65,36 @@
 template <uint8_t address>
 class RoxMCP2301X {
 private:
+  TwoWire * _Wire;
   uint8_t ioData[2] = {0, 0};
   uint8_t pullupData[2] = {0, 0};
   uint8_t states[2] = {0, 0};
   RoxFlags <uint8_t> flags;
   unsigned long lastTimeCheck = 0;
+  
   void writeData(uint8_t t_reg, uint8_t t_value){
-    Wire.beginTransmission(address);
-    Wire.write((uint8_t) t_reg);
-    Wire.write((uint8_t) t_value);
-  	Wire.endTransmission();
+    _Wire->beginTransmission(address);
+    _Wire->write((uint8_t) t_reg);
+    _Wire->write((uint8_t) t_value);
+  	_Wire->endTransmission();
   }
   uint8_t readData(uint8_t t_reg){
-    Wire.beginTransmission(address);
-    Wire.write((uint8_t) t_reg);
-    Wire.endTransmission();
+    _Wire->beginTransmission(address);
+    _Wire->write((uint8_t) t_reg);
+    _Wire->endTransmission();
 
-    Wire.requestFrom((int) address, (int) 1);
-    return Wire.read();
+    _Wire->requestFrom((int) address, (int) 1);
+    return _Wire->read();
   }
   void readPins(){
-    Wire.beginTransmission(address);
-    Wire.write((uint8_t) ROX_MCP2301X_IO);
-  	Wire.endTransmission();
+    _Wire->beginTransmission(address);
+    _Wire->write((uint8_t) ROX_MCP2301X_IO);
+  	_Wire->endTransmission();
     // request 2 bytes
     // always read both ports A and B
-    Wire.requestFrom((int) address, (int) 2);
-    states[0] = Wire.read();
-    states[1] = Wire.read();
+    _Wire->requestFrom((int) address, (int) 2);
+    states[0] = _Wire->read();
+    states[1] = _Wire->read();
   }
   void writePins(uint8_t index=0){
     writeData(ROX_MCP2301X_IO+index, states[0+index]);
@@ -111,12 +113,13 @@ private:
   }
 
 public:
-  RoxMCP2301X(){
+  RoxMCP2301X(TwoWire *_wire = &Wire){
     flags.reset();
+    _Wire = _wire;
   }
   void begin(bool fast=false){
-    Wire.begin();
-    Wire.setClock((fast) ? 400000 : 100000);
+    _Wire->begin();
+    _Wire->setClock((fast) ? 400000 : 100000);
     setAllPinsModes();
   }
   void pinMode(uint8_t pin, uint8_t mode){
