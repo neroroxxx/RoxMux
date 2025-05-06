@@ -1,5 +1,5 @@
 /*
-  https://www.RoxXxtar.com/bmc
+  https://www.roxxxtar.com/bmc
   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
   This Library is meant to work along with the Rox74HC595,

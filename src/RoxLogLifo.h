@@ -1,5 +1,5 @@
 /*
-  https://www.RoxXxtar.com/bmc
+  https://www.roxxxtar.com/bmc
   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
   This is a utility I wrote to use with some of my displays to log incoming and

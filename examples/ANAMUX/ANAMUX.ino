@@ -1,5 +1,5 @@
 /*
-  https://www.RoxXxtar.com/bmc
+  https://www.roxxxtar.com/bmc
   Example to read 2 74HC4067
   
   For use with ANAMUX

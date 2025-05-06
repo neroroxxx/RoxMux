@@ -1,5 +1,5 @@
 /*
-  https://www.RoxXxtar.com/bmc
+  https://www.roxxxtar.com/bmc
   Example to read 2 74HC4051
   The Rox74HC40XX has 3 classes, a base Rox74HC40XX and 2 children:
 

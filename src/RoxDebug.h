@@ -1,5 +1,5 @@
 /*
-  https://www.RoxXxtar.com/bmc
+  https://www.roxxxtar.com/bmc
   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
   NOTE: in order to use this macros you MUST add #define ROX_DEBUG before you
